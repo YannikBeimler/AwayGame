@@ -285,25 +285,28 @@ class DbService {
         await req
           .query(
             `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces)
-            VALUES (` +
-            offer.game.id + ',' +
-            offer.user.id + ',' +
-            'CONVERT(bit, 1),' +
-            offer.address.id + ',' +
-            'GETDATE(),' +
-            offer.places + ')'
+            VALUES (
+              ${offer.gameId},
+              ${offer.userId},
+              CONVERT(bit, 1),
+              ${offer.addressId},
+              GETDATE(), -- ${offer.date}
+              ${offer.places}
+            )`
           )
           .then(function (recordset) {
-            conn.close();
             console.log(recordset.recordset[0])
+            conn.close();
           })
           .catch(function (err) {
             console.log(err);
+            response.push(err);
             conn.close();
           });
       })
       .catch(function (err) {
         console.log(err);
+        response.push(err);
         conn.close();
       });
     return response;
@@ -321,11 +324,12 @@ class DbService {
         await req
           .query(
             `INSERT tblApplication (intOfferFK, intUserFK, intAddressFK, datDate)
-            VALUES (` +
-            application.offer.id + ',' +
-            application.user.id + ',' +
-            application.address.id + ',' +
-            'GETDATE())'
+            VALUES (
+              ${application.offer.id},
+              ${application.user.id},
+              ${application.address.id},
+              GETDATE()
+            )`
           )
           .then(function (recordset) {
             conn.close();
@@ -355,19 +359,21 @@ class DbService {
         await req
           .query(
             `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
-            VALUES (` +
-            address.street + ',' +
-            address.city + ',' +
-            address.latitude + ',' +
-            address.longitude + `)
+            VALUES (
+              ${address.street},
+              ${address.city},
+              ${address.latitude},
+              ${address.longitude}
+            )
             
             DECLARE @intAddressID int
-            SELECT @intAddressID = MAX(intAddressPK) FROM tblAddress
+            SELECT @intAddressID = MAX(tblAddress.intAddressPK) FROM tblAddress
             
             INSERT tblUser2Address (intUserFK, intAddressFK)
-            VALUES (` +
-            userId + `, +
-            @intAddressID +)`
+            VALUES (
+              ${userId},
+              @intAddressID
+            )`
           )
           .then(function (recordset) {
             conn.close();
@@ -431,8 +437,10 @@ class DbService {
         await req
           .query(
             `UPDATE tblApplication
-            SET blnAccepted = ` + answer +
-            ' WHERE intApplicationPK = ' + applicationId
+            SET
+              blnAccepted = ${answer}
+            WHERE
+              intApplicationPK = ` + applicationId
           )
           .then(function (recordset) {
             conn.close();
