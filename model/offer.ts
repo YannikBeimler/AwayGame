@@ -28,6 +28,6 @@ export class Offer {
     }
 
     getFreePlaces(): number {
-        return 0;
+        return this.places - this.applications.filter(a => a.accepted).length;
     }
 }
