@@ -10,7 +10,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className={"yb-navigation"}>
       <Navbar.Brand href="#home">{navigationProps.title}</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav">
-        <img src={"assets/images/menu_icon.svg"} />
+        <img src={"assets/images/menu_icon.svg"} alt={"Menü Icon"} />
       </Navbar.Toggle>
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
