@@ -10,10 +10,15 @@ type NavigationProps = {
 
 const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
   return (
-    <Navbar fixed="top" collapseOnSelect expand="lg" bg="light" variant="light" className={"yb-navigation"}>
+    <Navbar fixed="top" collapseOnSelect expand="xl" bg="light" variant="light" className={"yb-navigation"}>
       {navigationProps.showBackButton ? (
         <a href={navigationProps.backUrl}>
-          <img src={"/assets/images/back_icon.svg"} alt={"Zurück Button"} width={20} />
+          <img
+            src={"/assets/images/back_icon.svg"}
+            alt={"Zurück Button"}
+            width={20}
+            style={{ position: "relative", top: "-2px" }}
+          />
         </a>
       ) : (
         ""
