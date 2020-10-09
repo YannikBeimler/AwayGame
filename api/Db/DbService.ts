@@ -244,7 +244,7 @@ class DbService {
                 INNER JOIN vieOffer
                         ON vieOffer.intOfferPK = tblApplication.intOfferFK
                 INNER JOIN vieGame
-                        ON vieGame.intGamePK = tblOffer.intGameFK
+                        ON vieGame.intGamePK = vieOffer.intGameFK
                 INNER JOIN tblAddress
                         ON tblAddress.intAddressPK = tblApplication.intAddressFK
             WHERE
@@ -276,7 +276,8 @@ class DbService {
                 element["intPlaces"]
               );
               offer.address = address;
-              response.push(offer);
+              application.offer = offer;
+              response.push(application);
             });
           })
           .catch(function (err) {
