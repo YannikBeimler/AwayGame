@@ -9,6 +9,9 @@ export class Offer {
   date: Date;
   places: number;
 
+  gameString: string = "";
+  userString: string = "";
+
   game?: Game;
   user?: User;
   address?: Address;
@@ -40,6 +43,7 @@ export class Offer {
     }
 
     getAddressString(): string {
+        if (!this.address) return "";
         return this.address.street + " " + this.address.city;
     }
 }

@@ -83,29 +83,83 @@ class DbService {
 
                 await req.query(
                     `SELECT 
-              tblOffer.intOfferPK,
-              tblOffer.blnTransportation,
-              tblOffer.datDate,
-              tblOffer.intPlaces,
+              vieOffer.intOfferPK,
+              vieOffer.blnTransportation,
+              vieOffer.datDate,
+              vieOffer.intPlaces,
               tblAddress.intAddressPK,
               tblAddress.strCity, 
               tblAddress.strStreet,
               tblAddress.decLatitude,
-              tblAddress.decLongitude
+              tblAddress.decLongitude,
+              vieOffer.strUserName
           FROM
-              tblOffer
+              vieOffer
               INNER JOIN tblUser
-                      ON tblUser.intUserPK = tblOffer.intUserFK
+                      ON tblUser.intUserPK = vieOffer.intUserFK
               INNER JOIN tblAddress
-                      ON tblAddress.intAddressPK = tblOffer.intAddressFK
+                      ON tblAddress.intAddressPK = vieOffer.intAddressFK
           WHERE
-              tblOffer.intGameFK = ` + gameID)
+              vieOffer.intGameFK = ` + gameID)
                     .then(function (recordset) {
                         conn.close();
                         recordset.recordset.forEach(element => {
                             const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
                             const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
                             offer.address = address;
+                            offer.userString = element["strUserName"];
+                            response.push(offer);
+                        });
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        conn.close();
+                    })
+            })
+            .catch(function (err) {
+                console.log(err);
+                conn.close();
+            });
+        return response;
+    }
+
+    async getOffersForUser(userID: number) {
+        const conn = new sql.ConnectionPool(this.dbConfig);
+
+        const response = [];
+        await conn
+            .connect()
+            .then(async function () {
+                const req = new sql.Request(conn);
+
+                await req.query(
+                    `SELECT
+  vieOffer.intOfferPK,
+  vieOffer.blnTransportation,
+  vieOffer.datDate,
+  vieOffer.intPlaces,
+  vieOffer.intFreePlaces,
+    tblAddress.intAddressPK,
+    tblAddress.strCity, 
+    tblAddress.strStreet,
+    tblAddress.decLatitude,
+    tblAddress.decLongitude,
+    vieGame.strTitle
+FROM
+  vieOffer
+  INNER JOIN vieGame
+      ON vieGame.intGamePK = vieOffer.intGameFK
+    INNER JOIN tblAddress
+            ON tblAddress.intAddressPK = vieOffer.intAddressFK
+WHERE
+  vieOffer.intUserFK = ` + userID)
+                    .then(function (recordset) {
+                        conn.close();
+                        recordset.recordset.forEach(element => {
+                            const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
+                            const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
+                            offer.address = address;
+                            offer.gameString = element["strTitle"];
                             response.push(offer);
                         });
                     })
