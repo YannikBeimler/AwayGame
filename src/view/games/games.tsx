@@ -9,7 +9,7 @@ export function Games() {
       <Container
         className={"container-fluid games-container"}
         style={{ backgroundColor: "#232323", height: "100%", overflowY: "auto" }}>
-        <a href={"/games/"}>
+        <a href={"/games/1"}>
           <Row className={"match-box"}>
             <Col className={"match-box-content"}>
               <p className={"match-box-content-date text-center"}>Sa. 17. Oktober 2020</p>

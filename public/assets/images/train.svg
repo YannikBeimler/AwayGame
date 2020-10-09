@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30.926" height="43.664" viewBox="0 0 30.926 43.664">
+  <g id="zug" transform="translate(-74.683)">
+    <g id="Gruppe_8" data-name="Gruppe 8" transform="translate(74.683 32.75)">
+      <g id="Gruppe_7" data-name="Gruppe 7">
+        <path id="Pfad_5" data-name="Pfad 5" d="M83.438,384.222a.914.914,0,0,0-1.279.142l-7.277,9.1A.91.91,0,0,0,76.3,394.6l7.277-9.1A.912.912,0,0,0,83.438,384.222Z" transform="translate(-74.683 -384.024)" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_10" data-name="Gruppe 10" transform="translate(96.514 32.748)">
+      <g id="Gruppe_9" data-name="Gruppe 9">
+        <path id="Pfad_6" data-name="Pfad 6" d="M339.56,393.43l-7.277-9.1a.91.91,0,1,0-1.421,1.137l7.277,9.1a.91.91,0,0,0,1.421-1.137Z" transform="translate(-330.663 -383.993)" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_12" data-name="Gruppe 12" transform="translate(76.501 40.025)">
+      <g id="Gruppe_11" data-name="Gruppe 11">
+        <path id="Pfad_7" data-name="Pfad 7" d="M122.38,469.333H96.91a.91.91,0,1,0,0,1.819h25.471a.91.91,0,1,0,0-1.819Z" transform="translate(-96 -469.333)" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_14" data-name="Gruppe 14" transform="translate(79.23 36.387)">
+      <g id="Gruppe_13" data-name="Gruppe 13">
+        <path id="Pfad_8" data-name="Pfad 8" d="M148.922,426.667H128.91a.91.91,0,0,0,0,1.819h20.013a.91.91,0,1,0,0-1.819Z" transform="translate(-128 -426.667)" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_16" data-name="Gruppe 16" transform="translate(80.14 27.29)">
+      <g id="Gruppe_15" data-name="Gruppe 15">
+        <circle id="Ellipse_1" data-name="Ellipse 1" cx="0.91" cy="0.91" r="0.91" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_18" data-name="Gruppe 18" transform="translate(75.637)">
+      <g id="Gruppe_17" data-name="Gruppe 17">
+        <path id="Pfad_9" data-name="Pfad 9" d="M114.305,6.013A6.367,6.367,0,0,0,107.948,0H92.8a6.367,6.367,0,0,0-6.357,6.015l-.58,10.441c5.262.7,12.375,6.77,14.509,8.691,2.134-1.921,9.248-7.991,14.509-8.693ZM99.467,14.555a.909.909,0,0,1-.81.9l-8.187.91a.891.891,0,0,1-.1.005.91.91,0,0,1-.91-.91V9.1a.909.909,0,0,1,.81-.9l8.187-.91a.91.91,0,0,1,1.01.9ZM97.647,4.548a2.729,2.729,0,1,1,2.729,2.729A2.732,2.732,0,0,1,97.647,4.548Zm13.645,10.916a.91.91,0,0,1-.91.91.89.89,0,0,1-.1-.005l-8.187-.91a.908.908,0,0,1-.81-.9V8.187a.913.913,0,0,1,1.012-.906l8.185.911a.908.908,0,0,1,.81.9v6.368Z" transform="translate(-85.867)" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_20" data-name="Gruppe 20" transform="translate(98.333 27.29)">
+      <g id="Gruppe_19" data-name="Gruppe 19">
+        <circle id="Ellipse_2" data-name="Ellipse 2" cx="0.91" cy="0.91" r="0.91" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_22" data-name="Gruppe 22" transform="translate(89.237 3.639)">
+      <g id="Gruppe_21" data-name="Gruppe 21">
+        <circle id="Ellipse_3" data-name="Ellipse 3" cx="0.91" cy="0.91" r="0.91" fill="#ffcf00"/>
+      </g>
+    </g>
+    <g id="Gruppe_24" data-name="Gruppe 24" transform="translate(74.889 18.272)">
+      <g id="Gruppe_23" data-name="Gruppe 23">
+        <path id="Pfad_10" data-name="Pfad 10" d="M107.6,225.746l-.639-11.495c-5.478.8-13.9,8.685-13.985,8.769a.893.893,0,0,1-.18.115.9.9,0,0,1-.1.065.876.876,0,0,1-.682,0,1.04,1.04,0,0,1-.1-.064.875.875,0,0,1-.182-.115c-.089-.084-8.505-7.971-13.985-8.769l-.639,11.495a4.546,4.546,0,0,0,4.541,4.8h21.415a4.548,4.548,0,0,0,4.541-4.8Zm-24.345,1.163a2.729,2.729,0,1,1,2.729-2.729A2.732,2.732,0,0,1,83.258,226.908Zm18.193,0a2.729,2.729,0,1,1,2.729-2.729A2.732,2.732,0,0,1,101.452,226.908Z" transform="translate(-77.098 -214.251)" fill="#ffcf00"/>
+      </g>
+    </g>
+  </g>
+</svg>
