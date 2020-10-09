@@ -2,7 +2,7 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "games/{id}",
+      "route": "games/{gameId}/offers/{offerId}",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/GameById/index.js"
+  "scriptFile": "../dist/OfferById/index.js"
 }
