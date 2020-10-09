@@ -1,8 +1,8 @@
 import {Game} from '../model/game';
 import { Team } from '../model/team';
 import {Offer} from "../model/offer";
-import {User} from "../model/user";
 import {Address} from "../model/address";
+import { Application } from "../model/application";
 
 var sql = require("mssql");
 
@@ -72,108 +72,162 @@ class DbService {
       return response;
   }
 
-    async getOffersForGame(gameID: number) {
-        const conn = new sql.ConnectionPool(this.dbConfig);
+  async getOffersForGame(gameID: number) {
+      const conn = new sql.ConnectionPool(this.dbConfig);
 
-        const response = [];
-        await conn
-            .connect()
-            .then(async function () {
-                const req = new sql.Request(conn);
+      const response = [];
+      await conn
+          .connect()
+          .then(async function () {
+              const req = new sql.Request(conn);
 
-                await req.query(
-                    `SELECT 
-              vieOffer.intOfferPK,
-              vieOffer.blnTransportation,
-              vieOffer.datDate,
-              vieOffer.intPlaces,
-              tblAddress.intAddressPK,
-              tblAddress.strCity, 
-              tblAddress.strStreet,
-              tblAddress.decLatitude,
-              tblAddress.decLongitude,
-              vieOffer.strUserName
-          FROM
-              vieOffer
-              INNER JOIN tblUser
-                      ON tblUser.intUserPK = vieOffer.intUserFK
-              INNER JOIN tblAddress
-                      ON tblAddress.intAddressPK = vieOffer.intAddressFK
-          WHERE
-              vieOffer.intGameFK = ` + gameID)
-                    .then(function (recordset) {
-                        conn.close();
-                        recordset.recordset.forEach(element => {
-                            const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
-                            const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
-                            offer.address = address;
-                            offer.userString = element["strUserName"];
-                            response.push(offer);
-                        });
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                        conn.close();
-                    })
-            })
-            .catch(function (err) {
-                console.log(err);
-                conn.close();
-            });
-        return response;
-    }
+              await req.query(
+                  `SELECT 
+            vieOffer.intOfferPK,
+            vieOffer.blnTransportation,
+            vieOffer.datDate,
+            vieOffer.intPlaces,
+            tblAddress.intAddressPK,
+            tblAddress.strCity, 
+            tblAddress.strStreet,
+            tblAddress.decLatitude,
+            tblAddress.decLongitude,
+            vieOffer.strUserName
+        FROM
+            vieOffer
+            INNER JOIN tblUser
+                    ON tblUser.intUserPK = vieOffer.intUserFK
+            INNER JOIN tblAddress
+                    ON tblAddress.intAddressPK = vieOffer.intAddressFK
+        WHERE
+            vieOffer.intGameFK = ` + gameID)
+                  .then(function (recordset) {
+                      conn.close();
+                      recordset.recordset.forEach(element => {
+                          const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
+                          const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
+                          offer.address = address;
+                          offer.userString = element["strUserName"];
+                          response.push(offer);
+                      });
+                  })
+                  .catch(function (err) {
+                      console.log(err);
+                      conn.close();
+                  })
+          })
+          .catch(function (err) {
+              console.log(err);
+              conn.close();
+          });
+      return response;
+  }
 
-    async getOffersForUser(userID: number) {
-        const conn = new sql.ConnectionPool(this.dbConfig);
+  async getOffersForUser(userID: number) {
+      const conn = new sql.ConnectionPool(this.dbConfig);
 
-        const response = [];
-        await conn
-            .connect()
-            .then(async function () {
-                const req = new sql.Request(conn);
+      const response = [];
+      await conn
+          .connect()
+          .then(async function () {
+              const req = new sql.Request(conn);
 
-                await req.query(
-                    `SELECT
-  vieOffer.intOfferPK,
-  vieOffer.blnTransportation,
-  vieOffer.datDate,
-  vieOffer.intPlaces,
-  vieOffer.intFreePlaces,
-    tblAddress.intAddressPK,
-    tblAddress.strCity, 
-    tblAddress.strStreet,
-    tblAddress.decLatitude,
-    tblAddress.decLongitude,
-    vieGame.strTitle
-FROM
-  vieOffer
-  INNER JOIN vieGame
-      ON vieGame.intGamePK = vieOffer.intGameFK
-    INNER JOIN tblAddress
-            ON tblAddress.intAddressPK = vieOffer.intAddressFK
-WHERE
-  vieOffer.intUserFK = ` + userID)
-                    .then(function (recordset) {
-                        conn.close();
-                        recordset.recordset.forEach(element => {
-                            const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
-                            const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
-                            offer.address = address;
-                            offer.gameString = element["strTitle"];
-                            response.push(offer);
-                        });
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                        conn.close();
-                    })
-            })
-            .catch(function (err) {
-                console.log(err);
-                conn.close();
-            });
-        return response;
-    }
+              await req.query(
+                  `SELECT
+                    vieOffer.intOfferPK,
+                    vieOffer.blnTransportation,
+                    vieOffer.datDate,
+                    vieOffer.intPlaces,
+                    vieOffer.intFreePlaces,
+                      tblAddress.intAddressPK,
+                      tblAddress.strCity, 
+                      tblAddress.strStreet,
+                      tblAddress.decLatitude,
+                      tblAddress.decLongitude,
+                      vieGame.strTitle
+                    FROM
+                    vieOffer
+                    INNER JOIN vieGame
+                        ON vieGame.intGamePK = vieOffer.intGameFK
+                      INNER JOIN tblAddress
+                              ON tblAddress.intAddressPK = vieOffer.intAddressFK
+                    WHERE
+                    vieOffer.intUserFK = ` + userID)
+                  .then(function (recordset) {
+                      conn.close();
+                      recordset.recordset.forEach(element => {
+                          const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
+                          const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
+                          offer.address = address;
+                          offer.gameString = element["strTitle"];
+                          response.push(offer);
+                      });
+                  })
+                  .catch(function (err) {
+                      console.log(err);
+                      conn.close();
+                  })
+          })
+          .catch(function (err) {
+              console.log(err);
+              conn.close();
+          });
+      return response;
+  }
+  async getApplicationByUser(userId: number) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+        .connect()
+        .then(async function () {
+            const req = new sql.Request(conn);
+
+            await req.query(
+                `SELECT
+                tblApplication.intApplicationPK,
+                tblApplication.datDate,
+                tblApplication.blnAccepted,
+                vieOffer.intOfferPK,
+                vieOffer.blnTransportation,
+                vieOffer.strUserName,
+                tblAddress.intAddressPK,
+                tblAddress.strCity, 
+                tblAddress.strStreet,
+                tblAddress.decLatitude,
+                tblAddress.decLongitude,
+                vieGame.strTitle
+            FROM
+                tblApplication
+                INNER JOIN vieOffer
+                        ON vieOffer.intOfferPK = tblApplication.intOfferFK
+                INNER JOIN vieGame
+                        ON vieGame.intGamePK = tblOffer.intGameFK
+                INNER JOIN tblAddress
+                        ON tblAddress.intAddressPK = tblApplication.intAddressFK
+            WHERE
+                tblApplication.intUserFK = ` + userId)
+                .then(function (recordset) {
+                    conn.close();
+                    recordset.recordset.forEach(element => {
+                        const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
+                        const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
+                        const application = new Application(element["intApplicationPK"], element["datDate"], element["blnAccepted"], element["intPlaces"]);
+                        offer.address = address;
+                        response.push(offer);
+                    });
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    conn.close();
+                })
+        })
+        .catch(function (err) {
+            console.log(err);
+            conn.close();
+        });
+    return response;
+  }
 }
 
 export default new DbService();

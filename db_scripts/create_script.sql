@@ -96,6 +96,9 @@ SELECT
 			tblApplication.blnAccepted = 1
 			AND
 			tblApplication.intOfferFK = tblOffer.intOfferPK
-    )
+    ),
+    strUserName = tblUser.strName
 FROM
     tblOffer
+    INNER JOIN tblUser
+            ON tblUser.intUserPK = tblOffer.intUserFK
