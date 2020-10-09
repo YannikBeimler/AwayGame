@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LoginScreen } from "./login/loginscreen";
-import { Games } from "./games/games";
-import { GameDetail } from "./games/gameDetail";
+import Games from "./games/games";
+import GameDetail from "./games/gameDetail";
 
 const App: FunctionComponent = () => {
   return (
@@ -14,9 +14,7 @@ const App: FunctionComponent = () => {
         <Route exact path="/games">
           <Games />
         </Route>
-        <Route exact path="/games/1">
-          <GameDetail />
-        </Route>
+        <Route exact path="/games/:id" component={GameDetail} />
       </Switch>
     </Router>
   );
