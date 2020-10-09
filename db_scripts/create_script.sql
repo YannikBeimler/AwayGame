@@ -1,4 +1,5 @@
-
+DROP VIEW IF EXISTS vieGame;
+DROP VIEW IF EXISTS vieOffer;
 DROP TABLE IF EXISTS tblApplication;
 DROP TABLE IF EXISTS tblOffer;
 DROP TABLE IF EXISTS tblGame;
@@ -70,3 +71,34 @@ CREATE TABLE tblApplication (
     blnAccepted bit NULL,
     PRIMARY KEY (intApplicationPK)
 );
+
+CREATE VIEW vieGame AS
+SELECT
+    tblGame.intGamePK,
+    strTitle = T1.strName + ' - ' + T2.strName
+FROM
+    tblGame
+    INNER JOIN tblTeam AS T1
+            ON T1.intTeamPK = tblGame.intTeam1FK
+    INNER JOIN tblTeam AS T2
+            ON T2.intTeamPK = tblGame.intTeam2FK
+
+
+CREATE VIEW vieOffer AS
+SELECT
+    tblOffer.*,
+    intFreePlaces = tblOffer.intPlaces - (
+        SELECT
+			COUNT(*)
+		FROM
+			tblApplication
+		WHERE
+			tblApplication.blnAccepted = 1
+			AND
+			tblApplication.intOfferFK = tblOffer.intOfferPK
+    ),
+    strUserName = tblUser.strName
+FROM
+    tblOffer
+    INNER JOIN tblUser
+            ON tblUser.intUserPK = tblOffer.intUserFK

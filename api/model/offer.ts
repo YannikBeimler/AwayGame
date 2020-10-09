@@ -9,6 +9,9 @@ export class Offer {
   date: Date;
   places: number;
 
+  gameString: string = "";
+  userString: string = "";
+
   game?: Game;
   user?: User;
   address?: Address;
@@ -35,7 +38,12 @@ export class Offer {
     this.applications = applications || [];
   }
 
-  getFreePlaces(): number {
-    return this.places - this.applications.filter((a) => a.accepted).length;
-  }
+    getFreePlaces(): number {
+        return this.places - this.applications.filter(a => a.accepted).length;
+    }
+
+    getAddressString(): string {
+        if (!this.address) return "";
+        return this.address.street + " " + this.address.city;
+    }
 }
