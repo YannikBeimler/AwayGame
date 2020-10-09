@@ -1,9 +1,21 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LoginScreen } from "./login/loginscreen";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Games } from "./games/games";
 
 const App: FunctionComponent = () => {
-  return LoginScreen();
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <LoginScreen />
+        </Route>
+        <Route exact path="/games">
+          <Games />
+        </Route>
+      </Switch>
+    </Router>
+  );
 };
 
 export default App;

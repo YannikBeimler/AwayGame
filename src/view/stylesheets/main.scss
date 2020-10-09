@@ -1,7 +1,7 @@
 html, body, #root {
   height: 100%;
 
-  div.container {
+  div.login-container {
     padding-left: 50px;
     padding-right: 50px;
 
@@ -29,6 +29,81 @@ html, body, #root {
           color: #232323;
         }
       }
+    }
+  }
+}
+
+.yb-navigation {
+  color: #232323;
+
+  &.bg-light {
+    background-color: #FFCF00 !important;
+  }
+
+  .navbar-toggler {
+    border: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .navbar-brand {
+    color: #232323;
+  }
+}
+
+.games-container {
+  padding: 0;
+}
+
+.match-box {
+  height: 110px;
+  margin: 20px;
+
+  .match-box-content {
+    height: 100%;
+    width: 100%;
+    background-color: #393939;
+    position: relative;
+
+    .logo-team-one, .logo-team-two {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+    }
+
+    .logo-team-one {
+      top: 20px;
+      left: 15px;
+    }
+
+    .logo-team-two {
+      right: 15px;
+      top: 20px;
+    }
+
+    .match-box-content-date {
+      margin-top: 8px;
+      color: #FFCF00;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .match-box-content-divider {
+      position: absolute;
+      top: calc(50% - 1.5px);
+      left: calc(50% - 12.5px);
+      width: 25px;
+      height: 3px;
+      background-color: #FFFFFF;
+    }
+
+    .match-box-content-time {
+      margin-top: 45px;
+      color: #FFF;
+      font-weight: 700;
+      margin-bottom: 0;
     }
   }
 }
