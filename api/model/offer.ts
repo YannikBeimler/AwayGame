@@ -30,4 +30,8 @@ export class Offer {
     getFreePlaces(): number {
         return this.places - this.applications.filter(a => a.accepted).length;
     }
+
+    getAddressString(): string {
+        return this.address.street + " " + this.address.city;
+    }
 }

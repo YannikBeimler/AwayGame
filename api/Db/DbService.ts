@@ -1,5 +1,8 @@
 import {Game} from '../model/game';
 import { Team } from '../model/team';
+import {Offer} from "../model/offer";
+import {User} from "../model/user";
+import {Address} from "../model/address";
 
 var sql = require("mssql");
 
@@ -20,15 +23,15 @@ class DbService {
    constructor() {}
    
   async getGames() {
-    var conn = new sql.ConnectionPool(this.dbConfig);
-    
-    var response = [];
-    await conn
+      const conn = new sql.ConnectionPool(this.dbConfig);
+
+      const response = [];
+      await conn
       .connect()
-      .then(async function () {    
-        var req = new sql.Request(conn);
-    
-         await req.query(
+      .then(async function () {
+          const req = new sql.Request(conn);
+
+          await req.query(
           `SELECT
             tblGame.intGamePK,
             tblGame.datDate,
@@ -51,10 +54,10 @@ class DbService {
             tblGame.datDate > GETDATE()`)
         .then(function (recordset) {
           conn.close();
-          recordset.recordset.forEach(element => {            
-            var homeTeam = new Team(element["intHomeTeamPK"], element["strHomeTeam"], element["strHomeLogo"]);
-            var awayTeam = new Team(element["intAwayTeamPK"], element["strAwayTeam"], element["strAwayLogo"]);
-            response.push(new Game(element["intGamePK"], element["datDate"], homeTeam, awayTeam));
+          recordset.recordset.forEach(element => {
+              const homeTeam = new Team(element["intHomeTeamPK"], element["strHomeTeam"], element["strHomeLogo"]);
+              const awayTeam = new Team(element["intAwayTeamPK"], element["strAwayTeam"], element["strAwayLogo"]);
+              response.push(new Game(element["intGamePK"], element["datDate"], homeTeam, awayTeam));
           });
         })
         .catch(function (err) {
@@ -68,6 +71,55 @@ class DbService {
       });
       return response;
   }
+
+    async getOffersForGame(gameID: number) {
+        const conn = new sql.ConnectionPool(this.dbConfig);
+
+        const response = [];
+        await conn
+            .connect()
+            .then(async function () {
+                const req = new sql.Request(conn);
+
+                await req.query(
+                    `SELECT 
+              tblOffer.intOfferPK,
+              tblOffer.blnTransportation,
+              tblOffer.datDate,
+              tblOffer.intPlaces,
+              tblAddress.intAddressPK,
+              tblAddress.strCity, 
+              tblAddress.strStreet,
+              tblAddress.decLatitude,
+              tblAddress.decLongitude,
+          FROM
+              tblOffer
+              INNER JOIN tblUser
+                      ON tblUser.intUserPK = tblOffer.intUserFK
+              INNER JOIN tblAddress
+                      ON tblAddress.intAddressPK = tblOffer.intAddressFK
+          WHERE
+              tblOffer.intGameFK = ` + gameID)
+                    .then(function (recordset) {
+                        conn.close();
+                        recordset.recordset.forEach(element => {
+                            const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
+                            const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
+                            offer.address = address;
+                            response.push(offer);
+                        });
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        conn.close();
+                    })
+            })
+            .catch(function (err) {
+                console.log(err);
+                conn.close();
+            });
+        return response;
+    }
 }
 
 export default new DbService();
