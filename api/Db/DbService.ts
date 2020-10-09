@@ -3,6 +3,7 @@ import { Team } from "../model/team";
 import { Offer } from "../model/offer";
 import { Address } from "../model/address";
 import { Application } from "../model/application";
+import { User } from "../model/user";
 
 const sql = require("mssql");
 
@@ -410,10 +411,10 @@ class DbService {
     return response;
   }
 
-  async getUserIdByName(name: String) {
+  async getUserIdByName(name: string) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    var response = 0;
+    let response = null;
     await conn
       .connect()
       .then(async function () {
@@ -430,7 +431,8 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            response = recordset.recordset[0];
+            const userId = recordset.recordset[0];
+            response = new User(userId, name);
           })
           .catch(function (err) {
             console.log(err);
@@ -447,7 +449,7 @@ class DbService {
   async replyApplication(applicationId: Number, answer: boolean) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    var response = 0;
+    let response = 0;
     await conn
       .connect()
       .then(async function () {

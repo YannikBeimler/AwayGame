@@ -2,7 +2,7 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "login",
+      "route": "login/{userName}",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
