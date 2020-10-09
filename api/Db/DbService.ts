@@ -88,6 +88,9 @@ class DbService {
             vieOffer.blnTransportation,
             vieOffer.datDate,
             vieOffer.intPlaces,
+            vieOffer.intFreePlaces,
+            vieOffer.intFixPeopleCount,
+            vieOffer.strSector,
             tblAddress.intAddressPK,
             tblAddress.strCity, 
             tblAddress.strStreet,
@@ -117,7 +120,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               offer.address = address;
               offer.userString = element["strUserName"];
@@ -153,13 +159,15 @@ class DbService {
                     vieOffer.datDate,
                     vieOffer.intPlaces,
                     vieOffer.intFreePlaces,
+                    vieOffer.intFixPeopleCount,
+                    vieOffer.strSector,
                       tblAddress.intAddressPK,
                       tblAddress.strCity, 
                       tblAddress.strStreet,
                       tblAddress.decLatitude,
                       tblAddress.decLongitude,
                       vieGame.strTitle
-                    FROM
+                 FROM
                     vieOffer
                     INNER JOIN vieGame
                         ON vieGame.intGamePK = vieOffer.intGameFK
@@ -182,7 +190,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               offer.address = address;
               offer.gameString = element["strTitle"];
@@ -216,8 +227,12 @@ class DbService {
                 tblApplication.datDate,
                 tblApplication.blnAccepted,
                 vieOffer.intOfferPK,
-                vieOffer.blnTransportation,
-                vieOffer.strUserName,
+                    vieOffer.blnTransportation,
+                    vieOffer.datDate,
+                    vieOffer.intPlaces,
+                    vieOffer.intFreePlaces,
+                    vieOffer.intFixPeopleCount,
+                    vieOffer.strSector,
                 tblAddress.intAddressPK,
                 tblAddress.strCity, 
                 tblAddress.strStreet,
@@ -249,7 +264,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               const application = new Application(
                 element["intApplicationPK"],
@@ -272,7 +290,7 @@ class DbService {
       });
     return response;
   }
-  
+
   async addOffer(offer: Offer) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
@@ -295,7 +313,7 @@ class DbService {
             )`
           )
           .then(function (recordset) {
-            console.log(recordset.recordset[0])
+            console.log(recordset.recordset[0]);
             conn.close();
           })
           .catch(function (err) {
@@ -333,7 +351,7 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            console.log(recordset.recordset[0])
+            console.log(recordset.recordset[0]);
           })
           .catch(function (err) {
             console.log(err);
@@ -377,7 +395,7 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            console.log(recordset.recordset[0])
+            console.log(recordset.recordset[0]);
           })
           .catch(function (err) {
             console.log(err);
@@ -411,7 +429,7 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-              response = recordset.recordset[0];
+            response = recordset.recordset[0];
           })
           .catch(function (err) {
             console.log(err);

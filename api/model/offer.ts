@@ -10,6 +10,7 @@ export class Offer {
   places: number;
   freePlaces: number;
   peopleCount: number;
+  sector: string;
 
   gameString: string = "";
   userString: string = "";
@@ -31,6 +32,7 @@ export class Offer {
     places: number,
     freePlaces: number,
     peopleCount: number,
+    sector: string,
     game?: Game,
     user?: User,
     address?: Address,
@@ -42,6 +44,7 @@ export class Offer {
     this.places = places;
     this.freePlaces = freePlaces;
     this.peopleCount = peopleCount;
+    this.sector = sector;
     this.game = game;
     this.user = user;
     this.address = address;
