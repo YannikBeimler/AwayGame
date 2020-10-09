@@ -1,0 +1,20 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "route": "user/{userId}/address",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/AddressCreate/index.js"
+}

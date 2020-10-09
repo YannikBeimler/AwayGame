@@ -8,6 +8,8 @@ export class Offer {
   transportation: boolean; // 0: Train; 1: Car
   date: Date;
   places: number;
+  freePlaces: number;
+  peopleCount: number;
 
   gameString: string = "";
   userString: string = "";
@@ -27,6 +29,8 @@ export class Offer {
     transportation: boolean,
     date: Date,
     places: number,
+    freePlaces: number,
+    peopleCount: number,
     game?: Game,
     user?: User,
     address?: Address,
@@ -36,14 +40,12 @@ export class Offer {
     this.transportation = transportation;
     this.date = date;
     this.places = places;
+    this.freePlaces = freePlaces;
+    this.peopleCount = peopleCount;
     this.game = game;
     this.user = user;
     this.address = address;
     this.applications = applications || [];
-  }
-
-  getFreePlaces(): number {
-    return this.places - this.applications.filter((a) => a.accepted).length;
   }
 
   getAddressString(): string {
