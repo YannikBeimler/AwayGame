@@ -25,7 +25,7 @@ export function LoginScreen() {
               <Form.Control type="password" placeholder="Passwort" />
             </Form.Group>
             <Button
-              href={"/games"}
+                href={"/games"}
               style={{
                 marginTop: 20,
                 backgroundColor: "#232323",
@@ -54,7 +54,7 @@ export function LoginScreen() {
         </Col>
         <Col lg={6} md={6} sm={6} xs={8} className={"text-right"}>
           <span>
-            <a className={"yb-link-login"} href={"/reset-password"}>
+                       <a className={"yb-link-login"} href={"/reset-password"}>
               passwort vergessen?
             </a>
           </span>
