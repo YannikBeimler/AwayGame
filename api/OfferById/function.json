@@ -2,7 +2,7 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "offers/{id}",
+      "route": "offers/{offerId}",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
