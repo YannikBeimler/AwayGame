@@ -14,7 +14,7 @@ export function LoginScreen() {
             fluid
             src={"assets/images/clubs/yb.png"}
             alt={"Young Boys Logo"}
-            style={{ marginTop: "100px", maxWidth: "250px" }}
+            style={{ marginTop: "100px", maxWidth: "180px" }}
           />
         </Col>
       </Row>
