@@ -4,12 +4,15 @@ import Image from "react-bootstrap/Image";
 
 export function LoginScreen() {
   return (
-    <Container id={"entry-header"} className={"container-fluid"} style={{ backgroundColor: "#FFCF00", height: "100%" }}>
+    <Container
+      id={"entry-header"}
+      className={"container-fluid login-container"}
+      style={{ backgroundColor: "#FFCF00", height: "100%" }}>
       <Row>
         <Col lg={12} md={12} sm={12} className={"text-center"}>
           <Image
             fluid
-            src={"assets/images/yb.png"}
+            src={"assets/images/clubs/yb.png"}
             alt={"Young Boys Logo"}
             style={{ marginTop: "100px", maxWidth: "250px" }}
           />
@@ -25,7 +28,7 @@ export function LoginScreen() {
               <Form.Control type="password" placeholder="Passwort" />
             </Form.Group>
             <Button
-                href={"/games"}
+              href={"/games"}
               style={{
                 marginTop: 20,
                 backgroundColor: "#232323",
@@ -54,7 +57,7 @@ export function LoginScreen() {
         </Col>
         <Col lg={6} md={6} sm={6} xs={8} className={"text-right"}>
           <span>
-                       <a className={"yb-link-login"} href={"/reset-password"}>
+            <a className={"yb-link-login"} href={"/reset-password"}>
               passwort vergessen?
             </a>
           </span>
