@@ -13,7 +13,7 @@ html, body, #root {
     input {
       &[type='text'], &[type='password'] {
         background-color: transparent;
-        border: none ;
+        border: none;
         border-bottom: 1px solid #232323;
         border-radius: 0;
         padding-left: 0;
@@ -61,11 +61,35 @@ html, body, #root {
   height: 110px;
   margin: 20px;
 
+
+  &.match-box-button {
+
+    p {
+      color: #FFF;
+      font-size: 14px;
+      margin-top: 70px;
+    }
+
+    .match-box-button-icon {
+      position: absolute;
+      top: 20px;
+      left: calc(50% - 35px);
+      width: 70px;
+      height: auto;
+      max-height: 40px;
+    }
+  }
+
+
   .match-box-content {
     height: 100%;
     width: 100%;
     background-color: #393939;
     position: relative;
+
+    &.no-bg {
+      background-color: transparent;
+    }
 
     .logo-team-one, .logo-team-two {
       position: absolute;
