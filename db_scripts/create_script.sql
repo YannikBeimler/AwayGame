@@ -59,6 +59,8 @@ CREATE TABLE tblOffer (
     intAddressFK int FOREIGN KEY REFERENCES tblAddress(intAddressPK),
     datDate smalldatetime NOT NULL,
     intPlaces int,
+    intFixPeopleCount int,
+    strSector nvarchar(255),
     PRIMARY KEY (intOfferPK)
 );
 

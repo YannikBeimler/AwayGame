@@ -7,6 +7,10 @@ export class Application {
   date: Date;
   accepted: boolean;
 
+  offerId: number = -1;
+  userId: number = -1;
+  addressId: number = -1;
+
   offer?: Offer;
   user?: User;
   address?: Address;

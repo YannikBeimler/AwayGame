@@ -2,12 +2,12 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "user/{userId}/applications",
+      "route": "user/{userId}/address",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "post"
       ]
     },
     {
@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/ApplicationByUser/index.js"
+  "scriptFile": "../dist/AddressCreate/index.js"
 }
