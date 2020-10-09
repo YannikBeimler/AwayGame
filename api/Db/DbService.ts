@@ -73,7 +73,7 @@ class DbService {
     return response;
   }
 
-  async getOffersForGame(gameID: number) {
+  async getOffersForGame(gameId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
     const response = [];
     await conn
@@ -101,7 +101,7 @@ class DbService {
             INNER JOIN tblAddress
                     ON tblAddress.intAddressPK = vieOffer.intAddressFK
         WHERE
-            vieOffer.intGameFK = ` + gameID
+            vieOffer.intGameFK = ` + gameId
           )
           .then(function (recordset) {
             conn.close();
@@ -136,7 +136,7 @@ class DbService {
     return response;
   }
 
-  async getOffersForUser(userID: number) {
+  async getOffersForUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];
@@ -166,7 +166,7 @@ class DbService {
                       INNER JOIN tblAddress
                               ON tblAddress.intAddressPK = vieOffer.intAddressFK
                     WHERE
-                    vieOffer.intUserFK = ` + userID
+                    vieOffer.intUserFK = ` + userId
           )
           .then(function (recordset) {
             conn.close();
@@ -271,6 +271,54 @@ class DbService {
         conn.close();
       });
     return response;
+  }
+  
+  async addOffer(offer: Offer) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces)
+            VALUES (` +
+            offer.game.id + ',' +
+            offer.user.id + ',' +
+            'CONVERT(bit, 1),' +
+            offer.address.id + ',' +
+            'GETDATE(),' +
+            offer.places + '`'
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0])
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async addApplication(application: Application) {
+  }
+
+  async addAddress(address: Address) {
+  }
+
+  async getUserIdByName(name: String) {
+  }
+
+  async replyApplication(applicationId: Number, answer: boolean) {
   }
 }
 
