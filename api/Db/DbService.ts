@@ -91,7 +91,7 @@ class DbService {
               tblAddress.strCity, 
               tblAddress.strStreet,
               tblAddress.decLatitude,
-              tblAddress.decLongitude,
+              tblAddress.decLongitude
           FROM
               tblOffer
               INNER JOIN tblUser
