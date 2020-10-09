@@ -3,11 +3,21 @@ import { Offer } from "./offer";
 import { User } from "./User";
 
 export class Application {
-    id: number;
+    readonly id: number;
     date: Date;
     accepted: boolean;
 
-    offer: Offer;
-    user: User;
-    address: Address;
+    offer?: Offer;
+    user?: User;
+    address?: Address;
+
+
+    constructor(id: number, date: Date, accepted: boolean, offer?: Offer, user?: User, address?: Address) {
+        this.id = id;
+        this.date = date;
+        this.accepted = accepted;
+        this.offer = offer;
+        this.user = user;
+        this.address = address;
+    }
 }
