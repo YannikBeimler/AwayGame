@@ -53,6 +53,6 @@ export class Offer {
 
   getAddressString(): string {
     if (!this.address) return "";
-    return this.address.street + " " + this.address.city;
+    return this.address.getAddressString();
   }
 }

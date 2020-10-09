@@ -293,6 +293,55 @@ class DbService {
     return response;
   }
 
+  async getAddressesByUser(userId: number) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT
+                tblAddress.intAddressPK,
+                tblAddress.strCity, 
+                tblAddress.strStreet,
+                tblAddress.decLatitude,
+                tblAddress.decLongitude
+            FROM
+                tblAddress
+                INNER JOIN tblUser2Address
+                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+            WHERE
+                tblUser2Address.intUserFK = ` + userId
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
+              const address = new Address(
+                element["intAddressPK"],
+                element["strStreet"],
+                element["strCity"],
+                element["decLatitude"],
+                element["decLongitude"]
+              );
+              response.push(address);
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
   async addOffer(offer: Offer) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
