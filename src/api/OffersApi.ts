@@ -7,8 +7,13 @@ class OffersApi {
     return json as Offer;
   }
 
-  public async readOffers(gameId: number): Promise<Offer[]> {
+  public async readOffersByGame(gameId: number): Promise<Offer[]> {
     const json = await get(`${process.env.REACT_APP_BASE_API}/games/${gameId}/offers`);
+    return json as Offer[];
+  }
+
+  public async readOffersByUser(userId: number): Promise<Offer[]> {
+    const json = await get(`${process.env.REACT_APP_BASE_API}/users/${userId}/offers`);
     return json as Offer[];
   }
 }
