@@ -1,7 +1,7 @@
 html, body, #root {
   height: 100%;
 
-  div.container {
+  div.login-container {
     padding-left: 50px;
     padding-right: 50px;
 
@@ -29,6 +29,43 @@ html, body, #root {
           color: #232323;
         }
       }
+    }
+  }
+}
+
+.yb-navigation {
+  color: #232323;
+
+  &.bg-light {
+    background-color: #FFCF00 !important;
+  }
+
+  .navbar-toggler {
+    border: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .navbar-brand {
+    color: #232323;
+  }
+}
+
+.match-box {
+  height: 130px;
+  padding: 20px;
+
+  .match-box-content {
+    height: 100%;
+    width: 100%;
+    background-color: #393939;
+
+    .match-box-content-date {
+      margin-top: 8px;
+      color: #FFCF00;
+      font-size: 14px;
     }
   }
 }
