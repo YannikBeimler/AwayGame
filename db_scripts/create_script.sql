@@ -22,8 +22,8 @@ CREATE TABLE tblAddress (
     intAddressPK int IDENTITY(1,1) NOT NULL,
     strStreet nvarchar(255) NOT NULL,
     strCity nvarchar(255) NOT NULL,
-    decLatitude decimal(3,6)  NOT NULL,
-    decLongitude decimal(3,6)  NOT NULL,
+    decLatitude decimal(11, 8)  NOT NULL,
+    decLongitude decimal(11, 8)  NOT NULL,
     PRIMARY KEY (intAddressPK)
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE tblOffer (
     blnTransportation bit,
     intAddressFK int FOREIGN KEY REFERENCES tblAddress(intAddressPK),
     datDate smalldatetime NOT NULL,
-    intFreePlaces int,
+    intPlaces int,
     PRIMARY KEY (intOfferPK)
 );
 
