@@ -25,3 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 /.idea/
 /src/react-app-env.d.ts
+
+package-lock.json

@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LoginScreen } from "./login/loginscreen";
 import { Games } from "./games/games";
+import "reflect-metadata";
 
 const App: FunctionComponent = () => {
   return (
