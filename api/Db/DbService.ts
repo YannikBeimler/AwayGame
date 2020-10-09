@@ -4,7 +4,7 @@ import { Offer } from "../model/offer";
 import { Address } from "../model/address";
 import { Application } from "../model/application";
 
-var sql = require("mssql");
+const sql = require("mssql");
 
 class DbService {
   dbConfig = {
