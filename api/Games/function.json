@@ -2,10 +2,10 @@
   "bindings": [
     {
       "authLevel": "function",
+      "route": "games",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "ping",
       "methods": [
         "get",
         "post"
@@ -17,5 +17,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/Ping/index.js"
+  "scriptFile": "../dist/Games/index.js"
 }
