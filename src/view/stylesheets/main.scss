@@ -33,8 +33,28 @@ html, body, #root {
   }
 }
 
+.navbar-light {
+  .navbar-nav {
+    .nav-link {
+      color: #232323;
+    }
+  }
+}
+
 .yb-navigation {
   color: #232323;
+
+  .menu-icon {
+    height: 22px;
+    margin-right: 10px;
+    position: relative;
+    top: -3px;
+  }
+
+  .navbar-collapse {
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
 
   &.bg-light {
     background-color: #FFCF00 !important;
@@ -54,7 +74,7 @@ html, body, #root {
 }
 
 .games-container {
-  padding: 0;
+  padding: 56px 0 0 0;
 }
 
 .match-box {
@@ -63,7 +83,6 @@ html, body, #root {
 
 
   &.match-box-button {
-
     p {
       color: #FFF;
       font-size: 14px;
