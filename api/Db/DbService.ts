@@ -1,13 +1,12 @@
-import {Game} from '../model/game';
-import { Team } from '../model/team';
-import {Offer} from "../model/offer";
-import {Address} from "../model/address";
+import { Game } from "../model/game";
+import { Team } from "../model/team";
+import { Offer } from "../model/offer";
+import { Address } from "../model/address";
 import { Application } from "../model/application";
 
 var sql = require("mssql");
 
 class DbService {
-
   dbConfig = {
     server: "awaygamedb.database.windows.net", // Use your SQL server name
     database: "AwayGameDB", // Database to connect to
@@ -18,21 +17,22 @@ class DbService {
     options: {
       encrypt: true
     }
-   };
+  };
 
-   constructor() {}
-   
+  constructor() {}
+
   async getGames() {
-      const conn = new sql.ConnectionPool(this.dbConfig);
+    const conn = new sql.ConnectionPool(this.dbConfig);
 
-      const response = [];
-      await conn
+    const response = [];
+    await conn
       .connect()
       .then(async function () {
-          const req = new sql.Request(conn);
+        const req = new sql.Request(conn);
 
-          await req.query(
-          `SELECT
+        await req
+          .query(
+            `SELECT
             tblGame.intGamePK,
             tblGame.datDate,
             intHomeTeamPK = T1.intTeamPK,
@@ -51,38 +51,39 @@ class DbService {
             INNER JOIN tblTeam AS T2
                     ON T2.intTeamPK = tblGame.intTeam2FK
           WHERE
-            tblGame.datDate > GETDATE()`)
-        .then(function (recordset) {
-          conn.close();
-          recordset.recordset.forEach(element => {
+            tblGame.datDate > GETDATE()`
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
               const homeTeam = new Team(element["intHomeTeamPK"], element["strHomeTeam"], element["strHomeLogo"]);
               const awayTeam = new Team(element["intAwayTeamPK"], element["strAwayTeam"], element["strAwayLogo"]);
               response.push(new Game(element["intGamePK"], element["datDate"], homeTeam, awayTeam));
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
           });
-        })
-        .catch(function (err) {
-          console.log(err);
-          conn.close();
-        })
       })
       .catch(function (err) {
         console.log(err);
         conn.close();
       });
-      return response;
+    return response;
   }
 
   async getOffersForGame(gameID: number) {
-      const conn = new sql.ConnectionPool(this.dbConfig);
+    const conn = new sql.ConnectionPool(this.dbConfig);
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
 
-      const response = [];
-      await conn
-          .connect()
-          .then(async function () {
-              const req = new sql.Request(conn);
-
-              await req.query(
-                  `SELECT 
+        await req
+          .query(
+            `SELECT 
             vieOffer.intOfferPK,
             vieOffer.blnTransportation,
             vieOffer.datDate,
@@ -100,40 +101,53 @@ class DbService {
             INNER JOIN tblAddress
                     ON tblAddress.intAddressPK = vieOffer.intAddressFK
         WHERE
-            vieOffer.intGameFK = ` + gameID)
-                  .then(function (recordset) {
-                      conn.close();
-                      recordset.recordset.forEach(element => {
-                          const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
-                          const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
-                          offer.address = address;
-                          offer.userString = element["strUserName"];
-                          response.push(offer);
-                      });
-                  })
-                  .catch(function (err) {
-                      console.log(err);
-                      conn.close();
-                  })
+            vieOffer.intGameFK = ` + gameID
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
+              const address = new Address(
+                element["intAddressPK"],
+                element["strStreet"],
+                element["strCity"],
+                element["decLatitude"],
+                element["decLongitude"]
+              );
+              const offer = new Offer(
+                element["intOfferPK"],
+                element["blnTransportation"],
+                element["datDate"],
+                element["intPlaces"]
+              );
+              offer.address = address;
+              offer.userString = element["strUserName"];
+              response.push(offer);
+            });
           })
           .catch(function (err) {
-              console.log(err);
-              conn.close();
+            console.log(err);
+            conn.close();
           });
-      return response;
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
 
   async getOffersForUser(userID: number) {
-      const conn = new sql.ConnectionPool(this.dbConfig);
+    const conn = new sql.ConnectionPool(this.dbConfig);
 
-      const response = [];
-      await conn
-          .connect()
-          .then(async function () {
-              const req = new sql.Request(conn);
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
 
-              await req.query(
-                  `SELECT
+        await req
+          .query(
+            `SELECT
                     vieOffer.intOfferPK,
                     vieOffer.blnTransportation,
                     vieOffer.datDate,
@@ -152,39 +166,52 @@ class DbService {
                       INNER JOIN tblAddress
                               ON tblAddress.intAddressPK = vieOffer.intAddressFK
                     WHERE
-                    vieOffer.intUserFK = ` + userID)
-                  .then(function (recordset) {
-                      conn.close();
-                      recordset.recordset.forEach(element => {
-                          const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
-                          const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
-                          offer.address = address;
-                          offer.gameString = element["strTitle"];
-                          response.push(offer);
-                      });
-                  })
-                  .catch(function (err) {
-                      console.log(err);
-                      conn.close();
-                  })
+                    vieOffer.intUserFK = ` + userID
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
+              const address = new Address(
+                element["intAddressPK"],
+                element["strStreet"],
+                element["strCity"],
+                element["decLatitude"],
+                element["decLongitude"]
+              );
+              const offer = new Offer(
+                element["intOfferPK"],
+                element["blnTransportation"],
+                element["datDate"],
+                element["intPlaces"]
+              );
+              offer.address = address;
+              offer.gameString = element["strTitle"];
+              response.push(offer);
+            });
           })
           .catch(function (err) {
-              console.log(err);
-              conn.close();
+            console.log(err);
+            conn.close();
           });
-      return response;
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
   async getApplicationByUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];
     await conn
-        .connect()
-        .then(async function () {
-            const req = new sql.Request(conn);
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
 
-            await req.query(
-                `SELECT
+        await req
+          .query(
+            `SELECT
                 tblApplication.intApplicationPK,
                 tblApplication.datDate,
                 tblApplication.blnAccepted,
@@ -206,26 +233,43 @@ class DbService {
                 INNER JOIN tblAddress
                         ON tblAddress.intAddressPK = tblApplication.intAddressFK
             WHERE
-                tblApplication.intUserFK = ` + userId)
-                .then(function (recordset) {
-                    conn.close();
-                    recordset.recordset.forEach(element => {
-                        const address = new Address(element["intAddressPK"], element["strStreet"], element["strCity"], element["decLatitude"], element["decLongitude"]);
-                        const offer = new Offer(element["intOfferPK"], element["blnTransportation"], element["datDate"], element["intPlaces"]);
-                        const application = new Application(element["intApplicationPK"], element["datDate"], element["blnAccepted"], element["intPlaces"]);
-                        offer.address = address;
-                        response.push(offer);
-                    });
-                })
-                .catch(function (err) {
-                    console.log(err);
-                    conn.close();
-                })
-        })
-        .catch(function (err) {
+                tblApplication.intUserFK = ` + userId
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
+              const address = new Address(
+                element["intAddressPK"],
+                element["strStreet"],
+                element["strCity"],
+                element["decLatitude"],
+                element["decLongitude"]
+              );
+              const offer = new Offer(
+                element["intOfferPK"],
+                element["blnTransportation"],
+                element["datDate"],
+                element["intPlaces"]
+              );
+              const application = new Application(
+                element["intApplicationPK"],
+                element["datDate"],
+                element["blnAccepted"],
+                element["intPlaces"]
+              );
+              offer.address = address;
+              response.push(offer);
+            });
+          })
+          .catch(function (err) {
             console.log(err);
             conn.close();
-        });
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
     return response;
   }
 }
