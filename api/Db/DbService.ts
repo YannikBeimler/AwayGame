@@ -1,3 +1,6 @@
+import {Game} from '../model/game';
+import { Team } from '../model/team';
+
 var sql = require("mssql");
 
 class DbService {
@@ -10,8 +13,8 @@ class DbService {
     port: 1433,
     // Since we're on Windows Azure, we need to set the following options
     options: {
-          encrypt: true
-      }
+      encrypt: true
+    }
    };
 
    constructor() {}
@@ -19,7 +22,7 @@ class DbService {
   async getGames() {
     var conn = new sql.ConnectionPool(this.dbConfig);
     
-    var response = 0;
+    var response = [];
     await conn
       .connect()
       .then(async function () {    
@@ -27,9 +30,12 @@ class DbService {
     
          await req.query(
           `SELECT
+            tblGame.intGamePK,
             tblGame.datDate,
+            intHomeTeamPK = T1.intTeamPK,
             strHomeTeam = T1.strName,
             strHomeLogo = T1.strLogoPath,
+            intAwayTeamPK = T2.intTeamPK,
             strAwayTeam = T2.strName,
             strAwayLogo = T2.strLogoPath,
             tblAddress.*
@@ -44,8 +50,12 @@ class DbService {
           WHERE
             tblGame.datDate > GETDATE()`)
         .then(function (recordset) {
-          conn.close();        
-          response = recordset.recordset;
+          conn.close();
+          recordset.recordset.forEach(element => {            
+            var homeTeam = new Team(element["intHomeTeamPK"], element["strHomeTeam"], element["strHomeLogo"]);
+            var awayTeam = new Team(element["intAwayTeamPK"], element["strAwayTeam"], element["strAwayLogo"]);
+            response.push(new Game(element["intGamePK"], element["datDate"], homeTeam, awayTeam));
+          });
         })
         .catch(function (err) {
           console.log(err);
