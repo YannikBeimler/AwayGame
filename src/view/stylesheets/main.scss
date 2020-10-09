@@ -58,7 +58,7 @@ html, body, #root {
 }
 
 .match-box {
-  height: 130px;
+  height: 110px;
   margin: 20px;
 
   .match-box-content {
@@ -69,18 +69,18 @@ html, body, #root {
 
     .logo-team-one, .logo-team-two {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
     }
 
     .logo-team-one {
-      top: 25px;
-      left: 25px;
+      top: 20px;
+      left: 15px;
     }
 
     .logo-team-two {
-      right: 25px;
-      top: 25px;
+      right: 15px;
+      top: 20px;
     }
 
     .match-box-content-date {
@@ -100,7 +100,7 @@ html, body, #root {
     }
 
     .match-box-content-time {
-      margin-top: 60px;
+      margin-top: 45px;
       color: #FFF;
       font-weight: 700;
       margin-bottom: 0;
