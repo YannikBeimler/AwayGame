@@ -57,7 +57,7 @@ CREATE TABLE tblOffer (
     blnTransportation bit,
     intAddressFK int FOREIGN KEY REFERENCES tblAddress(intAddressPK),
     datDate smalldatetime NOT NULL,
-    intFreePlaces int,
+    intPlaces int,
     PRIMARY KEY (intOfferPK)
 );
 
