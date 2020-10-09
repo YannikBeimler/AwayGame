@@ -4,7 +4,7 @@ import { Offer } from "../model/offer";
 import { Address } from "../model/address";
 import { Application } from "../model/application";
 
-var sql = require("mssql");
+const sql = require("mssql");
 
 class DbService {
   dbConfig = {
@@ -73,7 +73,7 @@ class DbService {
     return response;
   }
 
-  async getOffersForGame(gameID: number) {
+  async getOffersForGame(gameId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
     const response = [];
     await conn
@@ -88,6 +88,9 @@ class DbService {
             vieOffer.blnTransportation,
             vieOffer.datDate,
             vieOffer.intPlaces,
+            vieOffer.intFreePlaces,
+            vieOffer.intFixPeopleCount,
+            vieOffer.strSector,
             tblAddress.intAddressPK,
             tblAddress.strCity, 
             tblAddress.strStreet,
@@ -101,7 +104,7 @@ class DbService {
             INNER JOIN tblAddress
                     ON tblAddress.intAddressPK = vieOffer.intAddressFK
         WHERE
-            vieOffer.intGameFK = ` + gameID
+            vieOffer.intGameFK = ` + gameId
           )
           .then(function (recordset) {
             conn.close();
@@ -117,7 +120,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               offer.address = address;
               offer.userString = element["strUserName"];
@@ -136,7 +142,7 @@ class DbService {
     return response;
   }
 
-  async getOffersForUser(userID: number) {
+  async getOffersForUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];
@@ -153,20 +159,22 @@ class DbService {
                     vieOffer.datDate,
                     vieOffer.intPlaces,
                     vieOffer.intFreePlaces,
+                    vieOffer.intFixPeopleCount,
+                    vieOffer.strSector,
                       tblAddress.intAddressPK,
                       tblAddress.strCity, 
                       tblAddress.strStreet,
                       tblAddress.decLatitude,
                       tblAddress.decLongitude,
                       vieGame.strTitle
-                    FROM
+                 FROM
                     vieOffer
                     INNER JOIN vieGame
                         ON vieGame.intGamePK = vieOffer.intGameFK
                       INNER JOIN tblAddress
                               ON tblAddress.intAddressPK = vieOffer.intAddressFK
                     WHERE
-                    vieOffer.intUserFK = ` + userID
+                    vieOffer.intUserFK = ` + userId
           )
           .then(function (recordset) {
             conn.close();
@@ -182,7 +190,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               offer.address = address;
               offer.gameString = element["strTitle"];
@@ -216,8 +227,12 @@ class DbService {
                 tblApplication.datDate,
                 tblApplication.blnAccepted,
                 vieOffer.intOfferPK,
-                vieOffer.blnTransportation,
-                vieOffer.strUserName,
+                    vieOffer.blnTransportation,
+                    vieOffer.datDate,
+                    vieOffer.intPlaces,
+                    vieOffer.intFreePlaces,
+                    vieOffer.intFixPeopleCount,
+                    vieOffer.strSector,
                 tblAddress.intAddressPK,
                 tblAddress.strCity, 
                 tblAddress.strStreet,
@@ -229,7 +244,7 @@ class DbService {
                 INNER JOIN vieOffer
                         ON vieOffer.intOfferPK = tblApplication.intOfferFK
                 INNER JOIN vieGame
-                        ON vieGame.intGamePK = tblOffer.intGameFK
+                        ON vieGame.intGamePK = vieOffer.intGameFK
                 INNER JOIN tblAddress
                         ON tblAddress.intAddressPK = tblApplication.intAddressFK
             WHERE
@@ -249,7 +264,10 @@ class DbService {
                 element["intOfferPK"],
                 element["blnTransportation"],
                 element["datDate"],
-                element["intPlaces"]
+                element["intPlaces"],
+                element["intFreePlaces"],
+                element["intFixPeopleCount"],
+                element["strSector"]
               );
               const application = new Application(
                 element["intApplicationPK"],
@@ -258,8 +276,193 @@ class DbService {
                 element["intPlaces"]
               );
               offer.address = address;
-              response.push(offer);
+              application.offer = offer;
+              response.push(application);
             });
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async addOffer(offer: Offer) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces)
+            VALUES (
+              ${offer.gameId},
+              ${offer.userId},
+              CONVERT(bit, 1),
+              ${offer.addressId},
+              GETDATE(), -- ${offer.date}
+              ${offer.places}
+            )`
+          )
+          .then(function (recordset) {
+            console.log(recordset.recordset[0]);
+            conn.close();
+          })
+          .catch(function (err) {
+            console.log(err);
+            response.push(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        response.push(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async addApplication(application: Application) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblApplication (intOfferFK, intUserFK, intAddressFK, datDate)
+            VALUES (
+              ${application.offer.id},
+              ${application.user.id},
+              ${application.address.id},
+              GETDATE()
+            )`
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0]);
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async addAddress(userId: Number, address: Address) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
+            VALUES (
+              ${address.street},
+              ${address.city},
+              ${address.latitude},
+              ${address.longitude}
+            )
+            
+            DECLARE @intAddressID int
+            SELECT @intAddressID = MAX(tblAddress.intAddressPK) FROM tblAddress
+            
+            INSERT tblUser2Address (intUserFK, intAddressFK)
+            VALUES (
+              ${userId},
+              @intAddressID
+            )`
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0]);
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async getUserIdByName(name: String) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    var response = 0;
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT
+                tblUser.intblUserPK
+            FROM
+                tblUser
+            WHERE
+                tblUser.strName = ` + name
+          )
+          .then(function (recordset) {
+            conn.close();
+            response = recordset.recordset[0];
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async replyApplication(applicationId: Number, answer: boolean) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    var response = 0;
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `UPDATE tblApplication
+            SET
+              blnAccepted = ${answer}
+            WHERE
+              intApplicationPK = ` + applicationId
+          )
+          .then(function (recordset) {
+            conn.close();
           })
           .catch(function (err) {
             console.log(err);

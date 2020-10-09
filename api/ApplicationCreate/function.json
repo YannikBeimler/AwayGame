@@ -2,12 +2,12 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "user/{userId}/applications",
+      "route": "application",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "post"
       ]
     },
     {
@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/ApplicationByUser/index.js"
+  "scriptFile": "../dist/ApplicationCreate/index.js"
 }
