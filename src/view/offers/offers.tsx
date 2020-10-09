@@ -84,11 +84,11 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
                   </div>
                   <div style={{ margin: 0, fontSize: "13px", fontWeight: 300, color: "white", width: "100%" }}>
                     Verfügbare Plätze
-                    <span className="float-right">1337</span>
+                    <span className="float-right">{offer.freePlaces}</span>
                   </div>
                   <div style={{ margin: 0, fontSize: "13px", fontWeight: 300, color: "white", width: "100%" }}>
                     Sektor
-                    <span className="float-right">{"XXX"}</span>
+                    <span className="float-right">{offer.sector}</span>
                   </div>
                 </Col>
               </Row>
