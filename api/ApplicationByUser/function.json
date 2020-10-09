@@ -2,7 +2,7 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "users/{userId}/applications",
+      "route": "user/{userId}/applications",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
