@@ -291,7 +291,7 @@ class DbService {
             'CONVERT(bit, 1),' +
             offer.address.id + ',' +
             'GETDATE(),' +
-            offer.places + '`'
+            offer.places + ')'
           )
           .then(function (recordset) {
             conn.close();
@@ -310,15 +310,143 @@ class DbService {
   }
 
   async addApplication(application: Application) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblApplication (intOfferFK, intUserFK, intAddressFK, datDate)
+            VALUES (` +
+            application.offer.id + ',' +
+            application.user.id + ',' +
+            application.address.id + ',' +
+            'GETDATE())'
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0])
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
 
-  async addAddress(address: Address) {
+  async addAddress(userId: Number, address: Address) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
+            VALUES (` +
+            address.street + ',' +
+            address.city + ',' +
+            address.latitude + ',' +
+            address.longitude + `)
+            
+            DECLARE @intAddressID int
+            SELECT @intAddressID = MAX(intAddressPK) FROM tblAddress
+            
+            INSERT tblUser2Address (intUserFK, intAddressFK)
+            VALUES (` +
+            userId + `, +
+            @intAddressID +)`
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0])
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
 
   async getUserIdByName(name: String) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    var response = 0;
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT
+                tblUser.intblUserPK
+            FROM
+                tblUser
+            WHERE
+                tblUser.strName = ` + name
+          )
+          .then(function (recordset) {
+            conn.close();
+              response = recordset.recordset[0];
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
 
   async replyApplication(applicationId: Number, answer: boolean) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    var response = 0;
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `UPDATE tblApplication
+            SET blnAccepted = ` + answer +
+            ' WHERE intApplicationPK = ' + applicationId
+          )
+          .then(function (recordset) {
+            conn.close();
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
   }
 }
 
