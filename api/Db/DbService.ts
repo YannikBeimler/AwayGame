@@ -1,5 +1,8 @@
 var sql = require("mssql");
 
+import {Game} from '../model/game';
+import { Team } from '../model/team';
+
 class DbService {
 
   dbConfig = {
@@ -19,7 +22,7 @@ class DbService {
   async getGames() {
     var conn = new sql.ConnectionPool(this.dbConfig);
     
-    var response = 0;
+    var response = [];
     await conn
       .connect()
       .then(async function () {    
@@ -27,9 +30,12 @@ class DbService {
     
          await req.query(
           `SELECT
+            tblGame.intGamePK,
             tblGame.datDate,
+            strHomeTeam = T1.intTeamPK,
             strHomeTeam = T1.strName,
             strHomeLogo = T1.strLogoPath,
+            strAwayTeam = T2.intTeamPK,
             strAwayTeam = T2.strName,
             strAwayLogo = T2.strLogoPath,
             tblAddress.*
@@ -45,7 +51,9 @@ class DbService {
             tblGame.datDate > GETDATE()`)
         .then(function (recordset) {
           conn.close();        
-          response = recordset.recordset;
+          response = recordset.recordset
+          recordset.recordset.forEach(element => {
+          });
         })
         .catch(function (err) {
           console.log(err);
