@@ -1,0 +1,35 @@
+html, body, #root {
+  height: 100%;
+
+  div.container {
+    padding-left: 50px;
+    padding-right: 50px;
+
+    .yb-link-login {
+      font-weight: 100;
+      color: #232323;
+    }
+
+    input {
+      &[type='text'], &[type='password'] {
+        background-color: transparent;
+        border: none ;
+        border-bottom: 1px solid #232323;
+        border-radius: 0;
+        padding-left: 0;
+        text-transform: uppercase;
+        color: #232323;
+        font-weight: 300;
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &::placeholder {
+          color: #232323;
+        }
+      }
+    }
+  }
+}
+
