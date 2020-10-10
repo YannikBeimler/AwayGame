@@ -158,6 +158,7 @@ class DbService {
           .query(
             `SELECT
                     vieOffer.intOfferPK,
+                    vieOffer.intGameFK,
                     vieOffer.strTitle,
                     vieOffer.blnTransportation,
                     vieOffer.datDate,
@@ -201,6 +202,7 @@ class DbService {
                 element["strSector"]
               );
               offer.address = address;
+              offer.gameId = element["intGameFK"];
               offer.gameString = element["strGameTitle"];
               response.push(offer);
             });
