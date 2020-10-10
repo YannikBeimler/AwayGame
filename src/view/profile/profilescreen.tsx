@@ -29,7 +29,7 @@ const ProfileScreen: FunctionComponent = () => {
       latitude: event.target.latitude.value === "" ? address?.latitude : Number(event.target.latitude.value),
       longitude: event.target.longitude.value === "" ? address?.longitude : Number(event.target.longitude.value)
     };
-    await AddressApi.saveAddress(2, JSON.stringify(addr));
+    await AddressApi.saveAddress(user?.id || -1, JSON.stringify(addr));
     //history.push(`/games`);
   };
 
