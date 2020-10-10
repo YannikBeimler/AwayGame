@@ -5,6 +5,7 @@ import { Application } from "./application";
 
 export class Offer {
   readonly id: number;
+  title: string;
   transportation: boolean; // 0: Train; 1: Car
   date: Date;
   places: number;
@@ -27,6 +28,7 @@ export class Offer {
 
   constructor(
     id: number,
+    title: string,
     transportation: boolean,
     date: Date,
     places: number,
@@ -39,6 +41,7 @@ export class Offer {
     applications?: Application[]
   ) {
     this.id = id;
+    this.title = title;
     this.transportation = transportation;
     this.date = date;
     this.places = places;
