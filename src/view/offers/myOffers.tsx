@@ -34,14 +34,14 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
   };
 
   useEffect(() => {
-    const gameId = match.params.id;
+    const userId = match.params.id;
     const loadOffers = async () => {
-      const offers = await OffersApi.readOffersByGame(gameId);
+      const offers = await OffersApi.readOffersByUser(userId);
       setOffers(offers);
     };
     const loadGame = async () => {
       const games = await GamesApi.readGames();
-      const game = games.find((g) => g.id.toString() === gameId);
+      const game = games.find((g) => g.id.toString() === userId);
       setGame(game);
     };
     loadOffers();
@@ -50,12 +50,7 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
 
   return (
     <>
-      <Navigation
-        hideMenuButton={true}
-        showBackButton={true}
-        backUrl={`/games/${game?.id}`}
-        title={"Mitfahrgelegenheit suchen"}
-      />
+      <Navigation hideMenuButton={true} showBackButton={true} backUrl={`/mygames`} title={"Bewerbungen"} />
       <Container
         className={"container-fluid games-container"}
         style={{ backgroundColor: "#232323", height: "100%", overflowY: "auto" }}>
@@ -83,7 +78,7 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
                 <Modal.Header closeButton>
                   <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Mitfahrgelegenheit anfragen</Modal.Body>
+                <Modal.Body></Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Abbrechen

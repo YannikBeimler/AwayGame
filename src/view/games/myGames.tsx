@@ -39,7 +39,7 @@ const MyGames: FunctionComponent = () => {
         style={{ backgroundColor: "#232323", height: "100%", overflowY: "auto" }}>
         {games?.map((game) => {
           return (
-            <Link to={`/mygames/${game.id}`} key={game.id}>
+            <Link to={`/myoffers/${game.id}`} key={game.id}>
               <Row className={"match-box"}>
                 <Col className={"match-box-content"}>
                   <p className={"match-box-content-date text-center"}>{moment(game.date).format("dd Do MMMM YYYY")}</p>
@@ -60,10 +60,6 @@ const MyGames: FunctionComponent = () => {
             </Link>
           );
         })}
-
-        <p style={{ color: "#FFCF00" }}>
-          Logged in {user?.name} | ID: {user?.id}
-        </p>
       </Container>
     </>
   );
