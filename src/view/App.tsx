@@ -6,6 +6,8 @@ import GameDetail from "./games/gameDetail";
 import Offers from "./offers/offers";
 import OfferNew from "./offers/offerNew";
 import ProfileScreen from "./profile/profilescreen";
+import MyGames from "./games/myGames";
+import MyApplications from "./applications/myApplications";
 
 const App: FunctionComponent = () => {
   return (
@@ -20,6 +22,8 @@ const App: FunctionComponent = () => {
         <Route exact path="/games/:id" component={GameDetail} />
         <Route exact path="/games/:id/offers" component={Offers} />
         <Route exact path="/games/:id/offers/new" component={OfferNew} />
+        <Route exact path="/mygames" component={MyGames} />
+        <Route exact path="/myapplications" component={MyApplications} />
         <Route exact path="/profile" component={ProfileScreen} />
       </Switch>
     </Router>

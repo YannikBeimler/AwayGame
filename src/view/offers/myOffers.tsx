@@ -8,7 +8,6 @@ import { Offer } from "../../../api/model/offer";
 import { RouteComponentProps } from "react-router";
 import OffersApi from "../../api/OffersApi";
 import ApplicationApi from "../../api/ApplicationApi";
-import Login from "../shared/login";
 
 type OffersParams = {
   id: string;
@@ -16,7 +15,7 @@ type OffersParams = {
 
 type OfferProps = RouteComponentProps<OffersParams>;
 
-const Offers: FunctionComponent<OfferProps> = ({ match }) => {
+const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
   const [offers, setOffers] = useState<Offer[]>();
   const [game, setGame] = useState<Game>();
   const [show, setShow] = useState(false);
@@ -29,7 +28,8 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
   };
   const handleAccept = async () => {
     if (!offer?.id) throw new Error("No Offer selected");
-    await ApplicationApi.createApplication(offer?.id, 1, Login.getCurrentUser().id);
+    if (!offer?.addressId) throw new Error("No AddressId available");
+    await ApplicationApi.createApplication(offer?.id, offer?.addressId, 1);
     setShow(false);
   };
 
@@ -130,4 +130,4 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
   );
 };
 
-export default Offers;
+export default MyOffers;
