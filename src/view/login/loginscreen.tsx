@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
+import { User } from "../../../api/model/user";
+import LoginApi from "../../api/LoginApi";
+import { useHistory } from "react-router-dom";
 
 export function LoginScreen() {
+  const history = useHistory();
+
+  useEffect(() => {
+    logoutUser();
+  });
+
+  const logoutUser = () => {
+    const u = { id: -1, name: "Logged Out" };
+    const nullUser = u as User;
+    localStorage.setItem("currentUser", JSON.stringify(nullUser));
+  };
+
+  const loginUser = async (username?: string) => {
+    if (username) {
+      const user = await LoginApi.getUser(username);
+      if (user.id > 0) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        return true;
+      }
+    }
+    logoutUser();
+    return false;
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    if (await loginUser(event.target.username.value)) history.push(`/games`);
+  };
+
   return (
     <Container
       id={"entry-header"}
@@ -20,15 +52,15 @@ export function LoginScreen() {
       </Row>
       <Row style={{ marginTop: "80px" }}>
         <Col lg={12} md={12} sm={12} className={"text-center"}>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formUsername">
-              <Form.Control type="text" placeholder="Benutzername" />
+              <Form.Control type="text" placeholder="Benutzername" name={"username"} />
             </Form.Group>
             <Form.Group controlId="formPassword">
-              <Form.Control type="password" placeholder="Passwort" />
+              <Form.Control type="password" placeholder="Passwort" name={"password"} />
             </Form.Group>
             <Button
-              href={"/games"}
+              type={"submit"}
               style={{
                 marginTop: 20,
                 backgroundColor: "#232323",
