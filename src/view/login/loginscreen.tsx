@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import { User } from "../../../api/model/user";
@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 
 export function LoginScreen() {
   const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   useEffect(() => {
     logoutUser();
@@ -33,6 +34,7 @@ export function LoginScreen() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (await loginUser(event.target.username.value)) history.push(`/games`);
+    else setErrorMsg("User nicht gefunden!");
   };
 
   return (
@@ -50,7 +52,14 @@ export function LoginScreen() {
           />
         </Col>
       </Row>
-      <Row style={{ marginTop: "80px" }}>
+
+      <Row>
+        <Col style={{ marginTop: "30px" }} lg={12} md={12} sm={12} className={"text-center"}>
+          <p>&nbsp;{errorMsg}&nbsp;</p>
+        </Col>
+      </Row>
+
+      <Row style={{ marginTop: "40px" }}>
         <Col lg={12} md={12} sm={12} className={"text-center"}>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formUsername">
