@@ -5,15 +5,11 @@ import { Game } from "../../../api/model/game";
 import GamesApi from "../../api/GamesApi";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { User } from "../../../api/model/user";
-import Login from "../shared/login";
 
 const Games: FunctionComponent = () => {
   const [games, setGames] = useState<Game[]>();
-  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    setUser(Login.getCurrentUser());
     const loadGames = async () => setGames(await GamesApi.readGames());
     loadGames();
   }, [setGames]);
@@ -47,10 +43,6 @@ const Games: FunctionComponent = () => {
             </Link>
           );
         })}
-
-        <p style={{ color: "#FFCF00" }}>
-          Logged in {user?.name} | ID: {user?.id}
-        </p>
       </Container>
     </>
   );

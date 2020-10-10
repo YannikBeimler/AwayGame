@@ -86,6 +86,7 @@ class DbService {
           .query(
             `SELECT 
             vieOffer.intOfferPK,
+            vieOffer.strTitle,
             vieOffer.blnTransportation,
             vieOffer.datDate,
             vieOffer.intPlaces,
@@ -119,6 +120,7 @@ class DbService {
               );
               const offer = new Offer(
                 element["intOfferPK"],
+                element["strTitle"],
                 element["blnTransportation"],
                 element["datDate"],
                 element["intPlaces"],
@@ -156,18 +158,20 @@ class DbService {
           .query(
             `SELECT
                     vieOffer.intOfferPK,
+                    vieOffer.intGameFK,
+                    vieOffer.strTitle,
                     vieOffer.blnTransportation,
                     vieOffer.datDate,
                     vieOffer.intPlaces,
                     vieOffer.intFreePlaces,
                     vieOffer.intFixPeopleCount,
                     vieOffer.strSector,
-                      tblAddress.intAddressPK,
-                      tblAddress.strCity, 
-                      tblAddress.strStreet,
-                      tblAddress.decLatitude,
-                      tblAddress.decLongitude,
-                      vieGame.strTitle
+                    tblAddress.intAddressPK,
+                    tblAddress.strCity, 
+                    tblAddress.strStreet,
+                    tblAddress.decLatitude,
+                    tblAddress.decLongitude,
+                    strGameTitle = vieGame.strTitle
                  FROM
                     vieOffer
                     INNER JOIN vieGame
@@ -189,6 +193,7 @@ class DbService {
               );
               const offer = new Offer(
                 element["intOfferPK"],
+                element["strTitle"],
                 element["blnTransportation"],
                 element["datDate"],
                 element["intPlaces"],
@@ -197,7 +202,8 @@ class DbService {
                 element["strSector"]
               );
               offer.address = address;
-              offer.gameString = element["strTitle"];
+              offer.gameId = element["intGameFK"];
+              offer.gameString = element["strGameTitle"];
               response.push(offer);
             });
           })
@@ -226,21 +232,22 @@ class DbService {
           .query(
             `SELECT
                 tblApplication.intApplicationPK,
+                vieOffer.strTitle,
                 tblApplication.datDate,
                 tblApplication.blnAccepted,
                 vieOffer.intOfferPK,
-                    vieOffer.blnTransportation,
-                    vieOffer.datDate,
-                    vieOffer.intPlaces,
-                    vieOffer.intFreePlaces,
-                    vieOffer.intFixPeopleCount,
-                    vieOffer.strSector,
+                vieOffer.blnTransportation,
+                vieOffer.datDate,
+                vieOffer.intPlaces,
+                vieOffer.intFreePlaces,
+                vieOffer.intFixPeopleCount,
+                vieOffer.strSector,
                 tblAddress.intAddressPK,
                 tblAddress.strCity, 
                 tblAddress.strStreet,
                 tblAddress.decLatitude,
                 tblAddress.decLongitude,
-                vieGame.strTitle
+                strGameTitle = vieGame.strTitle
             FROM
                 tblApplication
                 INNER JOIN vieOffer
@@ -264,6 +271,7 @@ class DbService {
               );
               const offer = new Offer(
                 element["intOfferPK"],
+                element["strTitle"],
                 element["blnTransportation"],
                 element["datDate"],
                 element["intPlaces"],
@@ -271,6 +279,7 @@ class DbService {
                 element["intFixPeopleCount"],
                 element["strSector"]
               );
+              offer.gameString = element["strGameTitle"];
               const application = new Application(
                 element["intApplicationPK"],
                 element["datDate"],
@@ -402,16 +411,17 @@ class DbService {
 
         await req
           .query(
-            `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces, intFixPeopleCount, strSector)
+            `INSERT tblOffer (intGameFK, intUserFK, strTitle, blnTransportation, intAddressFK, datDate, intPlaces, intFixPeopleCount, strSector)
             VALUES (
               ${offer.gameId},
               ${offer.userId},
+              '${offer.title}',
               CONVERT(bit, 1),
               ${offer.addressId},
               GETDATE(), -- ${offer.date}
               ${offer.places},
               ${offer.peopleCount},
-              ${offer.sector},
+              '${offer.sector}'
             )`
           )
           .then(function (recordset) {

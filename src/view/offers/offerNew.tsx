@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import GamesApi from "../../api/GamesApi";
 import { Game } from "../../../api/model/game";
 import OffersApi from "../../api/OffersApi";
+import Login from "../shared/login";
 
 type GameDetailParams = {
   id: string;
@@ -23,18 +24,15 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
       return;
     }
     const offer = {
-      id: -1,
-      transportation: true,
-      date: new Date(),
-      places: 0,
-      freePlaces: event.target.freePlaces.value,
-      peopleCount: event.target.peopleCount.value,
-      sector: event.target.sector.value,
-      game: game,
-      user: undefined,
-      address: undefined
+      gameId: game.id,
+      title: event.target.description.value,
+      userId: Login.getCurrentUser().id,
+      addressId: Login.getCurrentUser().adressFK ?? 1,
+      places: Number(event.target.freePlaces.value),
+      peopleCount: Number(event.target.peopleCount.value),
+      sector: event.target.sector.value
     };
-    await OffersApi.createOffer(offer);
+    await OffersApi.createOffer(JSON.stringify(offer));
     history.push(`/games/${game?.id}`);
   };
 
@@ -52,7 +50,7 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
     <>
       <Navigation
         title={"Mitfahrgelegenheit anbieten"}
-        backUrl={`/games/${game?.id}`}
+        backUrl={`games/${game?.id}`}
         showBackButton={true}
         hideMenuButton={true}
       />
@@ -74,10 +72,6 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
               <Form.Group controlId={"formDescription"}>
                 <Form.Label>Beschreibung</Form.Label>
                 <Form.Control type={"text"} name={"description"} />
-              </Form.Group>
-              <Form.Group controlId={"formStartLocation"}>
-                <Form.Label>Ausgangspunkt</Form.Label>
-                <Form.Control type={"text"} name={"startLocation"} />
               </Form.Group>
               <Form.Group controlId={"formStartTime"}>
                 <Form.Label>Abfahrtszeit</Form.Label>

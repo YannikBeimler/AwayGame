@@ -71,7 +71,11 @@ CREATE TABLE tblApplication (
 CREATE VIEW vieGame AS
 SELECT
     tblGame.intGamePK,
-    strTitle = T1.strName + ' - ' + T2.strName
+    strTitle = CASE WHEN tblGame.intTeam1FK = 1 THEN
+        T2.strName + ' (h)'
+        ELSE 
+        T1.strName + ' (a)'
+    END
 FROM
     tblGame
     INNER JOIN tblTeam AS T1
