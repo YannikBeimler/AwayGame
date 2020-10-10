@@ -5,6 +5,7 @@ import { RouteComponentProps } from "react-router";
 import GamesApi from "../../api/GamesApi";
 import { Game } from "../../../api/model/game";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 type GameDetailParams = {
   id: string;
@@ -64,7 +65,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
             </Col>
           </Row>
         </a>
-        <a href={"/"}>
+        <Link to={`/games/${game?.id}/offers/new`}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>
               <img
@@ -75,7 +76,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
               <p className={"text-center"}>Ich biete eine Mitfahrgelegenheit</p>
             </Col>
           </Row>
-        </a>
+        </Link>
         <a href={"/"}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>

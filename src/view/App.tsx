@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LoginScreen } from "./login/loginscreen";
 import Games from "./games/games";
 import GameDetail from "./games/gameDetail";
+import OfferNew from "./offers/offerNew";
 
 const App: FunctionComponent = () => {
   return (
@@ -15,6 +16,7 @@ const App: FunctionComponent = () => {
           <Games />
         </Route>
         <Route exact path="/games/:id" component={GameDetail} />
+        <Route exact path="/games/:id/offers/new" component={OfferNew} />
       </Switch>
     </Router>
   );
