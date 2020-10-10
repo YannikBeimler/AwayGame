@@ -9,7 +9,7 @@ export const get = async (path: string) => {
   return await apiResponse.json();
 };
 
-export const post = async (path: string, body: string) => {
+export const post = async (path: string, body: any) => {
   const apiRequest = new Request(path);
 
   const apiResponse = await fetch(apiRequest, {

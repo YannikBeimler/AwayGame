@@ -9,26 +9,32 @@ html, body, #root {
       font-weight: 100;
       color: #232323;
     }
+  }
+}
 
-    input {
-      &[type='text'], &[type='password'] {
-        background-color: transparent;
-        border: none;
-        border-bottom: 1px solid #232323;
-        border-radius: 0;
-        padding-left: 0;
-        text-transform: uppercase;
-        color: #232323;
-        font-weight: 300;
+input {
+  &[type='text'], &[type='password'], &[type='number'] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #232323;
+    border-radius: 0;
+    padding-left: 0;
+    text-transform: uppercase;
+    color: #232323;
+    font-weight: 300;
 
-        &:focus {
-          box-shadow: none;
-        }
+    &:active {
+      background-color: transparent;
+    }
 
-        &::placeholder {
-          color: #232323;
-        }
-      }
+    &:focus {
+      box-shadow: none;
+      background-color: transparent;
+      border-color: #232323;
+    }
+
+    &::placeholder {
+      color: #232323;
     }
   }
 }
@@ -81,6 +87,9 @@ html, body, #root {
   height: 110px;
   margin: 20px;
 
+  &.new-offer-box {
+    height: auto;
+  }
 
   &.match-box-button {
     p {
@@ -147,6 +156,36 @@ html, body, #root {
       color: #FFF;
       font-weight: 700;
       margin-bottom: 0;
+    }
+  }
+}
+
+.new-offer-box {
+  label {
+    margin-bottom: 0;
+    color: #FFFFFF;
+    font-size: 14px;
+  }
+
+  input {
+    border-bottom: 1px solid white;
+    color: #FFCF00;
+    text-transform: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+
+    &:focus {
+      border-color: #FFCF00;
+      color: #FFCF00;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+
+    &::placeholder {
+      color: white;
+      opacity: 0.5;
     }
   }
 }
