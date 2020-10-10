@@ -3,6 +3,7 @@ import { Team } from "../model/team";
 import { Offer } from "../model/offer";
 import { Address } from "../model/address";
 import { Application } from "../model/application";
+import { User } from "../model/user";
 
 const sql = require("mssql");
 
@@ -292,6 +293,55 @@ class DbService {
     return response;
   }
 
+  async getAddressesByUser(userId: number) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT
+                tblAddress.intAddressPK,
+                tblAddress.strCity, 
+                tblAddress.strStreet,
+                tblAddress.decLatitude,
+                tblAddress.decLongitude
+            FROM
+                tblAddress
+                INNER JOIN tblUser2Address
+                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+            WHERE
+                tblUser2Address.intUserFK = ` + userId
+          )
+          .then(function (recordset) {
+            conn.close();
+            recordset.recordset.forEach((element) => {
+              const address = new Address(
+                element["intAddressPK"],
+                element["strStreet"],
+                element["strCity"],
+                element["decLatitude"],
+                element["decLongitude"]
+              );
+              response.push(address);
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
   async addOffer(offer: Offer) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
@@ -303,14 +353,16 @@ class DbService {
 
         await req
           .query(
-            `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces)
+            `INSERT tblOffer (intGameFK, intUserFK, blnTransportation, intAddressFK, datDate, intPlaces, intFixPeopleCount, strSector)
             VALUES (
               ${offer.gameId},
               ${offer.userId},
               CONVERT(bit, 1),
               ${offer.addressId},
               GETDATE(), -- ${offer.date}
-              ${offer.places}
+              ${offer.places},
+              ${offer.peopleCount},
+              ${offer.sector},
             )`
           )
           .then(function (recordset) {
@@ -344,9 +396,9 @@ class DbService {
           .query(
             `INSERT tblApplication (intOfferFK, intUserFK, intAddressFK, datDate)
             VALUES (
-              ${application.offer.id},
-              ${application.user.id},
-              ${application.address.id},
+              ${application.offerId},
+              ${application.userId},
+              ${application.addressId},
               GETDATE()
             )`
           )
@@ -379,8 +431,8 @@ class DbService {
           .query(
             `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
             VALUES (
-              ${address.street},
-              ${address.city},
+              '${address.street}',
+              '${address.city}',
               ${address.latitude},
               ${address.longitude}
             )
@@ -410,10 +462,10 @@ class DbService {
     return response;
   }
 
-  async getUserIdByName(name: String) {
+  async getUserIdByName(name: string) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    var response = 0;
+    let response = null;
     await conn
       .connect()
       .then(async function () {
@@ -422,15 +474,16 @@ class DbService {
         await req
           .query(
             `SELECT
-                tblUser.intblUserPK
+                tblUser.intUserPK
             FROM
                 tblUser
             WHERE
-                tblUser.strName = ` + name
+                tblUser.strName = '${name}'`
           )
           .then(function (recordset) {
             conn.close();
-            response = recordset.recordset[0];
+            const userId = recordset.recordset[0]["intUserPK"];
+            response = new User(userId, name);
           })
           .catch(function (err) {
             console.log(err);
@@ -444,10 +497,10 @@ class DbService {
     return response;
   }
 
-  async replyApplication(applicationId: Number, answer: boolean) {
+  async replyApplication(applicationId: Number, answer: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    var response = 0;
+    let response = 0;
     await conn
       .connect()
       .then(async function () {

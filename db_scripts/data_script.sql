@@ -6,13 +6,13 @@ DELETE FROM tblTeam;
 DELETE FROM tblAddress;
 DELETE FROM tblUser;
 
-INSERT tblUser VALUES('yb fan', 'ybfan@bern.ch', 'password')
-INSERT tblUser VALUES('offer 1', 'a', 'password')
-INSERT tblUser VALUES('offer 2', 'a', 'password')
-INSERT tblUser VALUES('offer 3', 'a', 'password')
-INSERT tblUser VALUES('request 1', 'a', 'password')
-INSERT tblUser VALUES('request 2', 'a', 'password')
-INSERT tblUser VALUES('request 3', 'a', 'password')
+INSERT tblUser VALUES('ybfan', 'ybfan@bern.ch', '')
+INSERT tblUser VALUES('offer1', 'a', '')
+INSERT tblUser VALUES('offer2', 'a', '')
+INSERT tblUser VALUES('offer3', 'a', '')
+INSERT tblUser VALUES('request1', 'a', '')
+INSERT tblUser VALUES('request2', 'a', '')
+INSERT tblUser VALUES('request3', 'a', '')
 
 INSERT tblAddress VALUES('Papiermühlestrasse 71', 'Bern', 46.963097, 7.464860)
 INSERT tblAddress VALUES('St. Jakobs-Strasse 400', '4052 Basel', 47.541397, 7.620335)

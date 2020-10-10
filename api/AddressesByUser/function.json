@@ -2,13 +2,12 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "login/{userName}",
+      "route": "user/{userId}/addresses",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
-        "post"
+        "get"
       ]
     },
     {
@@ -17,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/Login/index.js"
+  "scriptFile": "../dist/AddressesByUser/index.js"
 }
