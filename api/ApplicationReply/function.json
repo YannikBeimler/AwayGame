@@ -2,12 +2,11 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "login/{userName}",
+      "route": "application/{applicationId}/reply",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
         "post"
       ]
     },
@@ -17,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/Login/index.js"
+  "scriptFile": "../dist/ApplicationReply/index.js"
 }

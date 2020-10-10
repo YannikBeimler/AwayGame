@@ -1,14 +1,16 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { Offer } from "../model/offer";
 import DbService from "../Db/DbService";
 import { Application } from "../model/application";
+import { Address } from "../model/address";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-  context.log("HTTP trigger function processed a request.");
-  const application = req.body as Application;
+  const applicationId = context.bindingData.applicationId;
+  const accept = req.body;
+  await DbService.replyApplication(applicationId, !!accept ? 1 : 0);
 
   context.res = {
-    status: 201 /* Defaults to 200 */,
-    body: await DbService.addApplication(application)
+    status: 204 /* Defaults to 200 */
   };
 };
 
