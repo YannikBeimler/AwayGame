@@ -342,6 +342,54 @@ class DbService {
     return response;
   }
 
+  async getAddressByUser(userId: number) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    let response = null;
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT TOP 1
+                tblAddress.intAddressPK,
+                tblAddress.strCity, 
+                tblAddress.strStreet,
+                tblAddress.decLatitude,
+                tblAddress.decLongitude
+            FROM
+                tblAddress
+                INNER JOIN tblUser2Address
+                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+            WHERE
+                tblUser2Address.intUserFK = ` + userId
+          )
+          .then(function (recordset) {
+            conn.close();
+            
+            const element = recordset.recordset[0];
+            response = new Address(
+              element["intAddressPK"],
+              element["strStreet"],
+              element["strCity"],
+              element["decLatitude"],
+              element["decLongitude"]
+            );
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
   async addOffer(offer: Offer) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
@@ -445,6 +493,42 @@ class DbService {
               ${userId},
               @intAddressID
             )`
+          )
+          .then(function (recordset) {
+            conn.close();
+            console.log(recordset.recordset[0]);
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async updateAddress(address: Address) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `UPDATE tblAddress
+            SET
+              strStreet = '${address.street}',
+              strCity = '${address.city}',
+              decLatitude = ${address.latitude},
+              decLongitude = ${address.longitude}
+            WHERE
+              intAddressPK = ${address.id}`
           )
           .then(function (recordset) {
             conn.close();

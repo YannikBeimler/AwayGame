@@ -1,9 +1,15 @@
 export class Address {
-  readonly id: number;
+  id: number;
   street: string;
   city: string;
   latitude: number;
   longitude: number;
+
+  userId: number = -1;
+
+  // improvement for profilescreen
+  strLatitude: string;
+  strLongitude: string;
 
   constructor(id: number, street: string, city: string, latitude: number, longitude: number) {
     this.id = id;
@@ -11,6 +17,8 @@ export class Address {
     this.city = city;
     this.latitude = latitude;
     this.longitude = longitude;
+    this.strLatitude = latitude + " ";
+    this.strLongitude = longitude + " ";
   }
 
   getAddressString(): string {
