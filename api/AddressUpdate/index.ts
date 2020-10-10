@@ -8,16 +8,18 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
   let responseMessage = null
 
-  if ((address !== undefined && address.id === -1) || address === undefined){
+  if (address.id === -1 || address === undefined){
+    //insert new entry
     responseMessage = await DbService.addAddress(address.userId, address);
   } else {
+    // update existing address
     responseMessage = await DbService.updateAddress(address);
   }
 
 console.log(req.body)
   context.res = {
     status: 200 /* Defaults to 200 */,
-    body: address.id
+    body: responseMessage
   };
 };
 
