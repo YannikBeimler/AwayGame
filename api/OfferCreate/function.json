@@ -2,12 +2,11 @@
   "bindings": [
     {
       "authLevel": "function",
-      "route": "users/{userId}/offers",
+      "route": "offer",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
         "post"
       ]
     },
@@ -17,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/OffersByUser/index.js"
+  "scriptFile": "../dist/OfferCreate/index.js"
 }

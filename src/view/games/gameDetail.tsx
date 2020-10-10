@@ -32,6 +32,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
         title={`${game?.team1?.name ?? ""} - ${game?.team2?.name ?? ""}`}
         backUrl={"/games"}
         showBackButton={true}
+        hideMenuButton={true}
       />
       <Container
         className={"container-fluid games-container"}
@@ -53,7 +54,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
             />
           </Col>
         </Row>
-        <a href={"/"}>
+        <Link to={`/games/${game?.id}/offers`}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>
               <img
@@ -64,7 +65,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
               <p className={"text-center"}>Ich suche eine Mitfahrgelegenheit</p>
             </Col>
           </Row>
-        </a>
+        </Link>
         <Link to={`/games/${game?.id}/offers/new`}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>

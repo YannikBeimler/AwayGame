@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/ApplicationByUserId/index.js"
+  "scriptFile": "../dist/ApplicationByUser/index.js"
 }
