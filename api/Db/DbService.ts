@@ -345,7 +345,7 @@ class DbService {
   async getAddressByUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    let response = null;
+    let response = new Address(-1, "", "", -1, -1);
     await conn
       .connect()
       .then(async function () {
@@ -368,7 +368,7 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            
+
             const element = recordset.recordset[0];
             response = new Address(
               element["intAddressPK"],
@@ -467,6 +467,7 @@ class DbService {
   }
 
   async addAddress(userId: Number, address: Address) {
+    console.log("AddAddress");
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];
@@ -475,9 +476,7 @@ class DbService {
       .then(async function () {
         const req = new sql.Request(conn);
 
-        await req
-          .query(
-            `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
+        const queryString = `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
             VALUES (
               '${address.street}',
               '${address.city}',
@@ -492,8 +491,11 @@ class DbService {
             VALUES (
               ${userId},
               @intAddressID
-            )`
-          )
+            )`;
+        console.log(queryString);
+
+        await req
+          .query(queryString)
           .then(function (recordset) {
             conn.close();
             console.log(recordset.recordset[0]);
@@ -511,6 +513,7 @@ class DbService {
   }
 
   async updateAddress(address: Address) {
+    console.log("UpdateAddress");
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];

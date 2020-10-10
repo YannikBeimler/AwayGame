@@ -2,14 +2,12 @@ export class Address {
   id: number;
   street: string;
   city: string;
-  latitude: number;
-  longitude: number;
-
-  userId: number = -1;
+  latitude: number = -1;
+  longitude: number = -1;
 
   // improvement for profilescreen
-  strLatitude: string;
-  strLongitude: string;
+  strLatitude: string = "";
+  strLongitude: string = "";
 
   constructor(id: number, street: string, city: string, latitude: number, longitude: number) {
     this.id = id;
