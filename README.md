@@ -15,3 +15,11 @@ Would you like to travel to a YB away game together with other YB fans? With Awa
 ## Description
 
 Azure static web app with serverless node.js for backend and react as frontend.
+
+
+## Demo
+
+View a demo on https://wonderful-dune-07619ab03.azurestaticapps.net/
+
+User: ybfan<br>
+Password: initpas
