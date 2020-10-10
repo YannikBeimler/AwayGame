@@ -10,6 +10,8 @@ Team Members:
 
 ## Goal
 
-Realize an app to support the common visit of away games. The fellow travellers can be friends or other YB fans. Search for possible fellow travellers with different criteria (e.g. "drive yourself", "need a ride", "use public transport" etc.) and with an interface to the timetable and ticket store.
+Would you like to travel to a YB away game together with other YB fans? With AwayGame you can easily tell other YB fans if you have free seats in your car. Or you can search for a ride and tell them where you want to go. So you can easily carpool and nobody has to go to a YB game alone.
 
+## Description
 
+Azure static web app with serverless node.js for backend and react as frontend.
