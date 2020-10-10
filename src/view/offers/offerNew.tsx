@@ -52,7 +52,7 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
     <>
       <Navigation
         title={"Mitfahrgelegenheit anbieten"}
-        backUrl={`games/${game?.id}`}
+        backUrl={`/games/${game?.id}`}
         showBackButton={true}
         hideMenuButton={true}
       />
