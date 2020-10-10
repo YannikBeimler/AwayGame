@@ -495,7 +495,7 @@ class DbService {
     return response;
   }
 
-  async replyApplication(applicationId: Number, answer: boolean) {
+  async replyApplication(applicationId: Number, answer: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     let response = 0;
