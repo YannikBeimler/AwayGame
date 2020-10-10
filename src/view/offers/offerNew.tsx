@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Navigation from "../shared/navigation";
-import { Offer } from "../../../api/model/offer";
 import { RouteComponentProps } from "react-router";
 import GamesApi from "../../api/GamesApi";
 import { Game } from "../../../api/model/game";
 import OffersApi from "../../api/OffersApi";
+import { Offer } from "../../../api/model/offer";
 
 type GameDetailParams = {
   id: string;
@@ -18,7 +18,21 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const offer = new Offer(-1, true, new Date(), event.target.freePlaces.value, game, undefined, undefined);
+    if (!game) {
+      return;
+    }
+    const offer = new Offer(
+      -1,
+      true,
+      new Date(),
+      event.target.freePlaces.value,
+      0,
+      event.target.peopleCount.value,
+      event.target.sector.value,
+      game,
+      undefined,
+      undefined
+    );
     OffersApi.createOffer(offer);
   };
 
