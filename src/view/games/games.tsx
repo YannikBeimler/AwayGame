@@ -47,10 +47,6 @@ const Games: FunctionComponent = () => {
             </Link>
           );
         })}
-
-        <p style={{ color: "#FFCF00" }}>
-          Logged in {user?.name} | ID: {user?.id}
-        </p>
       </Container>
     </>
   );
