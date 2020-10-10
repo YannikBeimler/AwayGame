@@ -24,10 +24,10 @@ const ProfileScreen: FunctionComponent = () => {
 
     const addr = {
       id: address?.id ?? -1,
-      street: event.target.street.value === "" ? address?.street : event.target.street.value,
-      city: event.target.city.value === "" ? address?.city : event.target.city.value,
-      latitude: event.target.latitude.value === "" ? address?.latitude : Number(event.target.latitude.value),
-      longitude: event.target.longitude.value === "" ? address?.longitude : Number(event.target.longitude.value)
+      street: !event.target.street.value ? address?.street : event.target.street.value,
+      city: !event.target.city.value ? address?.city : event.target.city.value,
+      latitude: !event.target.latitude.value ? address?.latitude : Number(event.target.latitude.value),
+      longitude: !event.target.longitude.value ? address?.longitude : Number(event.target.longitude.value)
     };
     await AddressApi.saveAddress(user?.id || -1, JSON.stringify(addr));
     //history.push(`/games`);
@@ -44,16 +44,16 @@ const ProfileScreen: FunctionComponent = () => {
           <Col lg={12} md={12} sm={12} className={"text-center"}>
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formStreet">
-                <Form.Control type="text" placeholder={address?.street ?? "Strasse"} name={"street"} />
+                <Form.Control type="text" placeholder={(address?.street && address.street) ? address.street : "Strasse"} name={"street"} />
               </Form.Group>
               <Form.Group controlId="formCity">
-                <Form.Control type="text" placeholder={address?.city ?? "Ort"} name={"city"} />
+                <Form.Control type="text" placeholder={(address?.city && address.city) ? address.city : "Ort"} name={"city"} />
               </Form.Group>
               <Form.Group controlId="formLatitude">
-                <Form.Control type="text" placeholder={address?.strLatitude ?? "Breitengrad"} name={"latitude"} />
+                <Form.Control type="text" placeholder={(address?.strLatitude && address.latitude !== -1) ? address.strLatitude : "Breitengrad"} name={"latitude"} />
               </Form.Group>
               <Form.Group controlId="formLongitude">
-                <Form.Control type="text" placeholder={address?.strLongitude ?? "Längengrad"} name={"longitude"} />
+                <Form.Control type="text" placeholder={(address?.strLongitude && address.longitude !== -1) ? address.strLongitude : "Längengrad"} name={"longitude"} />
               </Form.Group>
               <Button
                 type={"submit"}
