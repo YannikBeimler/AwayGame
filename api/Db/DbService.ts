@@ -548,7 +548,7 @@ class DbService {
   async getUserIdByName(name: string) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    let response = null;
+    let response = new User(-1, "Logged Out");
     await conn
       .connect()
       .then(async function () {
