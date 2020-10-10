@@ -8,9 +8,6 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
   const body = req.body;
   const address = body as Address;
 
-  console.log(address);
-  console.log(address.id);
-
   if (address.id === -1) {
     //insert new entry
     await DbService.addAddress(userId, address);

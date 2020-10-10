@@ -463,7 +463,6 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            console.log(recordset.recordset[0]);
           })
           .catch(function (err) {
             console.log(err);
