@@ -2,10 +2,10 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Navigation from "../shared/navigation";
 import { RouteComponentProps } from "react-router";
+import { useHistory } from "react-router-dom";
 import GamesApi from "../../api/GamesApi";
 import { Game } from "../../../api/model/game";
 import OffersApi from "../../api/OffersApi";
-import { Offer } from "../../../api/model/offer";
 
 type GameDetailParams = {
   id: string;
@@ -15,25 +15,27 @@ type GameDetailProps = RouteComponentProps<GameDetailParams>;
 
 const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
   const [game, setGame] = useState<Game>();
+  const history = useHistory();
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (!game) {
       return;
     }
-    const offer = new Offer(
-      -1,
-      true,
-      new Date(),
-      event.target.freePlaces.value,
-      0,
-      event.target.peopleCount.value,
-      event.target.sector.value,
-      game,
-      undefined,
-      undefined
-    );
-    OffersApi.createOffer(offer);
+    const offer = {
+      id: -1,
+      transportation: true,
+      date: new Date(),
+      places: 0,
+      freePlaces: event.target.freePlaces.value,
+      peopleCount: event.target.peopleCount.value,
+      sector: event.target.sector.value,
+      game: game,
+      user: undefined,
+      address: undefined
+    };
+    await OffersApi.createOffer(offer);
+    history.push(`/games/${game?.id}`);
   };
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
     <>
       <Navigation
         title={"Mitfahrgelegenheit anbieten"}
-        backUrl={"/games/1"}
+        backUrl={`games/${game?.id}`}
         showBackButton={true}
         hideMenuButton={true}
       />

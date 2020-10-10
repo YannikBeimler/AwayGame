@@ -2,7 +2,7 @@ import { get, post } from "./Requests";
 import { Offer } from "../../api/model/offer";
 
 class OffersApi {
-  public async createOffer(formData: Offer): Promise<void> {
+  public async createOffer(formData: any): Promise<void> {
     await post(`${process.env.REACT_APP_BASE_API}/offers/`, formData);
   }
 
