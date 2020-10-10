@@ -49,7 +49,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
                 />
                 Auszeichnungen
               </Nav.Link>
-              <Nav.Link href="#">
+              <Nav.Link href="/mygames">
                 <img
                   className={"menu-icon"}
                   src={"/assets/images/menu_icons/offers_menu_icon.svg"}
@@ -57,7 +57,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
                 />
                 Meine Angebote
               </Nav.Link>
-              <Nav.Link href="#">
+              <Nav.Link href="/myapplications">
                 <img
                   className={"menu-icon"}
                   src={"/assets/images/menu_icons/request_menu_icon.svg"}
@@ -66,11 +66,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
                 Meine Anfragen
               </Nav.Link>
               <Nav.Link href="/">
-                <img
-                  className={"menu-icon"}
-                  src={"/assets/images/menu_icons/profile_menu_icon.svg"}
-                  alt={""}
-                />
+                <img className={"menu-icon"} src={"/assets/images/menu_icons/profile_menu_icon.svg"} alt={""} />
                 Ausloggen
               </Nav.Link>
             </Nav>

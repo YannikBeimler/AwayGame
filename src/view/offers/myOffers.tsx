@@ -7,8 +7,6 @@ import moment from "moment";
 import { Offer } from "../../../api/model/offer";
 import { RouteComponentProps } from "react-router";
 import OffersApi from "../../api/OffersApi";
-import ApplicationApi from "../../api/ApplicationApi";
-import Login from "../shared/login";
 
 type OffersParams = {
   id: string;
@@ -16,7 +14,7 @@ type OffersParams = {
 
 type OfferProps = RouteComponentProps<OffersParams>;
 
-const Offers: FunctionComponent<OfferProps> = ({ match }) => {
+const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
   const [offers, setOffers] = useState<Offer[]>();
   const [game, setGame] = useState<Game>();
   const [show, setShow] = useState(false);
@@ -29,19 +27,19 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
   };
   const handleAccept = async () => {
     if (!offer?.id) throw new Error("No Offer selected");
-    await ApplicationApi.createApplication(offer?.id, Login.getCurrentUser().adressFK ?? 1, Login.getCurrentUser().id);
+    if (!offer?.addressId) throw new Error("No AddressId available");
     setShow(false);
   };
 
   useEffect(() => {
-    const gameId = match.params.id;
+    const userId = match.params.id;
     const loadOffers = async () => {
-      const offers = await OffersApi.readOffersByGame(gameId);
+      const offers = await OffersApi.readOffersByUser(userId);
       setOffers(offers);
     };
     const loadGame = async () => {
       const games = await GamesApi.readGames();
-      const game = games.find((g) => g.id.toString() === gameId);
+      const game = games.find((g) => g.id.toString() === userId);
       setGame(game);
     };
     loadOffers();
@@ -50,12 +48,7 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
 
   return (
     <>
-      <Navigation
-        hideMenuButton={true}
-        showBackButton={true}
-        backUrl={`/games/${game?.id}`}
-        title={"Mitfahrgelegenheit suchen"}
-      />
+      <Navigation hideMenuButton={true} showBackButton={true} backUrl={`/mygames`} title={"Bewerbungen"} />
       <Container
         className={"container-fluid games-container"}
         style={{ backgroundColor: "#232323", height: "100%", overflowY: "auto" }}>
@@ -81,15 +74,15 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
             <>
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
+                  <Modal.Title>Bewerbung akzeptieren</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Mitfahrgelegenheit anfragen</Modal.Body>
+                <Modal.Body></Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Abbrechen
                   </Button>
                   <Button variant="primary" onClick={handleAccept}>
-                    Anfragen
+                    Annehmen
                   </Button>
                 </Modal.Footer>
               </Modal>
@@ -130,4 +123,4 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
   );
 };
 
-export default Offers;
+export default MyOffers;
