@@ -66,7 +66,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
             </Col>
           </Row>
         </Link>
-        <a href={"/"}>
+        <Link to={`/games/${game?.id}/offers/new`}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>
               <img
@@ -77,7 +77,7 @@ const GameDetail: FunctionComponent<GameDetailProps> = ({ match }) => {
               <p className={"text-center"}>Ich biete eine Mitfahrgelegenheit</p>
             </Col>
           </Row>
-        </a>
+        </Link>
         <a href={"/"}>
           <Row className={"match-box match-box-button"}>
             <Col className={"match-box-content match-box-button"}>
