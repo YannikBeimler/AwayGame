@@ -7,7 +7,6 @@ import moment from "moment";
 import { Offer } from "../../../api/model/offer";
 import { RouteComponentProps } from "react-router";
 import OffersApi from "../../api/OffersApi";
-import ApplicationApi from "../../api/ApplicationApi";
 
 type OffersParams = {
   id: string;
@@ -29,7 +28,6 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
   const handleAccept = async () => {
     if (!offer?.id) throw new Error("No Offer selected");
     if (!offer?.addressId) throw new Error("No AddressId available");
-    await ApplicationApi.createApplication(offer?.id, offer?.addressId, 1);
     setShow(false);
   };
 
@@ -76,7 +74,7 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
             <>
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
+                  <Modal.Title>Bewerbung akzeptieren</Modal.Title>
                 </Modal.Header>
                 <Modal.Body></Modal.Body>
                 <Modal.Footer>
@@ -84,7 +82,7 @@ const MyOffers: FunctionComponent<OfferProps> = ({ match }) => {
                     Abbrechen
                   </Button>
                   <Button variant="primary" onClick={handleAccept}>
-                    Anfragen
+                    Annehmen
                   </Button>
                 </Modal.Footer>
               </Modal>

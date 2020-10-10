@@ -13,6 +13,10 @@ class ApplicationApi {
     );
   }
 
+  public async acceptApplication(applicationId: number): Promise<void> {
+    await post(`${process.env.REACT_APP_BASE_API}/application/${applicationId}/reply`, undefined);
+  }
+
   public async applicationByUser(userId: number): Promise<Application[]> {
     const applications = await get(`${process.env.REACT_APP_BASE_API}/user/${userId}/applications`);
     return applications as Application[];

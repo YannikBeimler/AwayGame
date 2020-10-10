@@ -19,6 +19,8 @@ const MyApplications: FunctionComponent = () => {
 
   const handleAccept = async () => {
     setShow(false);
+    if (!application) return;
+    await ApplicationApi.acceptApplication(application?.id);
   };
 
   useEffect(() => {
@@ -40,15 +42,15 @@ const MyApplications: FunctionComponent = () => {
             <>
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
+                  <Modal.Title>Mitfahrgelegenheit</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Mitfahrgelegenheit anfragen</Modal.Body>
+                <Modal.Body>Mitfahrgelegenheit akzeptieren</Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Abbrechen
                   </Button>
                   <Button variant="primary" onClick={handleAccept}>
-                    Anfragen
+                    Akzeptieren
                   </Button>
                 </Modal.Footer>
               </Modal>

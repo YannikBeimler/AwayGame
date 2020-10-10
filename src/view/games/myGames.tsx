@@ -11,7 +11,7 @@ import OffersApi from "../../api/OffersApi";
 
 const MyGames: FunctionComponent = () => {
   const [games, setGames] = useState<Game[]>();
-  const [user, setUser] = useState<User>();
+  const [, setUser] = useState<User>();
 
   useEffect(() => {
     const user = Login.getCurrentUser();
