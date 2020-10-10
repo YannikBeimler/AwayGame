@@ -29,7 +29,7 @@ const Offers: FunctionComponent<OfferProps> = ({ match }) => {
   };
   const handleAccept = async () => {
     if (!offer?.id) throw new Error("No Offer selected");
-    await ApplicationApi.createApplication(offer?.id, 1, Login.getCurrentUser().id);
+    await ApplicationApi.createApplication(offer?.id, Login.getCurrentUser().adressFK ?? 1, Login.getCurrentUser().id);
     setShow(false);
   };
 

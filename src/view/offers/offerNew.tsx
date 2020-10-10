@@ -21,6 +21,7 @@ const OfferNew: FunctionComponent<GameDetailProps> = ({ match }) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (!game) {
+      console.log("no game");
       return;
     }
     const offer = {
