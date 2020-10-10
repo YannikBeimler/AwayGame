@@ -33,7 +33,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
           </Navbar.Toggle>
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#">
+              <Nav.Link href="/profile" key={2}>
                 <img
                   className={"menu-icon"}
                   src={"/assets/images/menu_icons/profile_menu_icon.svg"}
@@ -64,6 +64,14 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
                   alt={"Angebot Icon"}
                 />
                 Meine Anfragen
+              </Nav.Link>
+              <Nav.Link href="/">
+                <img
+                  className={"menu-icon"}
+                  src={"/assets/images/menu_icons/profile_menu_icon.svg"}
+                  alt={""}
+                />
+                Ausloggen
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

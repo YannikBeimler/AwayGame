@@ -212,6 +212,7 @@ class DbService {
       });
     return response;
   }
+
   async getApplicationByUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
@@ -312,10 +313,10 @@ class DbService {
                 tblAddress.decLongitude
             FROM
                 tblAddress
-                INNER JOIN tblUser2Address
-                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+                INNER JOIN tblUser
+                        ON tblUser.intAddressFK = tblAddress.intAddressPK
             WHERE
-                tblUser2Address.intUserFK = ` + userId
+                tblUser.intUserPK = ` + userId
           )
           .then(function (recordset) {
             conn.close();
@@ -329,6 +330,54 @@ class DbService {
               );
               response.push(address);
             });
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
+  async getAddressByUser(userId: number) {
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    let response = new Address(-1, "", "", -1, -1);
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `SELECT TOP 1
+                tblAddress.intAddressPK,
+                tblAddress.strCity, 
+                tblAddress.strStreet,
+                tblAddress.decLatitude,
+                tblAddress.decLongitude
+            FROM
+                tblAddress
+                INNER JOIN tblUser
+                        ON tblUser.intAddressFK = tblAddress.intAddressPK
+            WHERE
+                tblUser.intUserPK = ` + userId
+          )
+          .then(function (recordset) {
+            conn.close();
+
+            const element = recordset.recordset[0];
+            response = new Address(
+              element["intAddressPK"],
+              element["strStreet"],
+              element["strCity"],
+              element["decLatitude"],
+              element["decLongitude"]
+            );
           })
           .catch(function (err) {
             console.log(err);
@@ -419,6 +468,7 @@ class DbService {
   }
 
   async addAddress(userId: Number, address: Address) {
+    console.log("AddAddress");
     const conn = new sql.ConnectionPool(this.dbConfig);
 
     const response = [];
@@ -427,9 +477,7 @@ class DbService {
       .then(async function () {
         const req = new sql.Request(conn);
 
-        await req
-          .query(
-            `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
+        const queryString = `INSERT tblAddress(strStreet, strCity, decLatitude, decLongitude)
             VALUES (
               '${address.street}',
               '${address.city}',
@@ -440,12 +488,15 @@ class DbService {
             DECLARE @intAddressID int
             SELECT @intAddressID = MAX(tblAddress.intAddressPK) FROM tblAddress
             
-            INSERT tblUser2Address (intUserFK, intAddressFK)
-            VALUES (
-              ${userId},
-              @intAddressID
-            )`
-          )
+            UPDATE tblUser
+            SET
+                intAddressFK = @intAddressID
+            WHERE
+                intUserPK = ${userId}`;
+        console.log(queryString);
+
+        await req
+          .query(queryString)
           .then(function (recordset) {
             conn.close();
             console.log(recordset.recordset[0]);
@@ -462,10 +513,46 @@ class DbService {
     return response;
   }
 
+  async updateAddress(address: Address) {
+    console.log("UpdateAddress");
+    const conn = new sql.ConnectionPool(this.dbConfig);
+
+    const response = [];
+    await conn
+      .connect()
+      .then(async function () {
+        const req = new sql.Request(conn);
+
+        await req
+          .query(
+            `UPDATE tblAddress
+            SET
+              strStreet = '${address.street}',
+              strCity = '${address.city}',
+              decLatitude = ${address.latitude},
+              decLongitude = ${address.longitude}
+            WHERE
+              intAddressPK = ${address.id}`
+          )
+          .then(function (recordset) {
+            conn.close();
+          })
+          .catch(function (err) {
+            console.log(err);
+            conn.close();
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        conn.close();
+      });
+    return response;
+  }
+
   async getUserIdByName(name: string) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
-    let response = null;
+    let response = new User(-1, "Logged Out");
     await conn
       .connect()
       .then(async function () {
@@ -474,7 +561,8 @@ class DbService {
         await req
           .query(
             `SELECT
-                tblUser.intUserPK
+                tblUser.intUserPK,
+                tblUser.intAddressFK
             FROM
                 tblUser
             WHERE
@@ -482,8 +570,8 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            const userId = recordset.recordset[0]["intUserPK"];
-            response = new User(userId, name);
+            const element = recordset.recordset[0];
+            response = new User(element["intUserPK"], name, element["intAddressFK"]);
           })
           .catch(function (err) {
             console.log(err);

@@ -3,16 +3,8 @@ DELETE FROM tblApplication;
 DELETE FROM tblOffer;
 DELETE FROM tblGame;
 DELETE FROM tblTeam;
-DELETE FROM tblAddress;
 DELETE FROM tblUser;
-
-INSERT tblUser VALUES('ybfan', 'ybfan@bern.ch', '')
-INSERT tblUser VALUES('offer1', 'a', '')
-INSERT tblUser VALUES('offer2', 'a', '')
-INSERT tblUser VALUES('offer3', 'a', '')
-INSERT tblUser VALUES('request1', 'a', '')
-INSERT tblUser VALUES('request2', 'a', '')
-INSERT tblUser VALUES('request3', 'a', '')
+DELETE FROM tblAddress;
 
 INSERT tblAddress VALUES('Papiermühlestrasse 71', 'Bern', 46.963097, 7.464860)
 INSERT tblAddress VALUES('St. Jakobs-Strasse 400', '4052 Basel', 47.541397, 7.620335)
@@ -29,9 +21,13 @@ INSERT tblAddress VALUES('OfferAdresse 2', 'Bern', 47.408457, 9.305782)
 INSERT tblAddress VALUES('OfferAdresse 3', 'Bern', 47.408457, 9.305782)
 INSERT tblAddress VALUES('RequestAdresse 1', 'Bern', 47.408457, 9.305782)
 
-INSERT tblUser2Address VALUES(2, 11)
-INSERT tblUser2Address VALUES(3, 12)
-INSERT tblUser2Address VALUES(4, 13)
+INSERT tblUser VALUES(NULL, 'ybfan', 'ybfan@bern.ch', '')
+INSERT tblUser VALUES(11, 'offer1', 'a', '')
+INSERT tblUser VALUES(12, 'offer2', 'a', '')
+INSERT tblUser VALUES(13, 'offer3', 'a', '')
+INSERT tblUser VALUES(NULL, 'request1', 'a', '')
+INSERT tblUser VALUES(NULL, 'request2', 'a', '')
+INSERT tblUser VALUES(NULL, 'request3', 'a', '')
 
 INSERT tblTeam VALUES('BSC Young Boys', 'yb.png', 1)
 INSERT tblTeam VALUES('FC Basel 1893', 'fcbasel.png', 2)
@@ -50,7 +46,7 @@ INSERT tblGame VALUES('20201101 16:00', 5, 1)
 INSERT tblGame VALUES('20201108 16:00', 1, 3)
 INSERT tblGame VALUES('20201129 16:00', 4, 1)
 
-INSERT tblOffer VALUES(1, 2, CONVERT(bit, 1), 11, '20201017 16:00', 2, 0, 'B13')
-INSERT tblOffer VALUES(1, 2, CONVERT(bit, 1), 12, '20201017 16:00', 1, 0, 'B13')
+INSERT tblOffer VALUES(1, 2, 'Zusammen nach Genf', CONVERT(bit, 1), 11, '20201017 16:00', 2, 0, 'B13')
+INSERT tblOffer VALUES(1, 2, 'Sportwagen', CONVERT(bit, 1), 12, '20201017 16:00', 1, 0, 'B13')
 
 INSERT tblApplication VALUES(1, 5, 14, '20201017 16:30', NULL)
