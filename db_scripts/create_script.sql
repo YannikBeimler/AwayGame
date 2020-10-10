@@ -4,20 +4,8 @@ DROP TABLE IF EXISTS tblApplication;
 DROP TABLE IF EXISTS tblOffer;
 DROP TABLE IF EXISTS tblGame;
 DROP TABLE IF EXISTS tblTeam;
-DROP TABLE IF EXISTS tblUser2Address;
-DROP TABLE IF EXISTS tblAddress;
 DROP TABLE IF EXISTS tblUser;
-
-CREATE TABLE tblUser (
-	intUserPK int IDENTITY(1,1) NOT NULL,
-	strName nvarchar(255) NOT NULL,
-	strMail nvarchar(255) NOT NULL,
-	strPassword nvarchar(255) NOT NULL,
-    PRIMARY KEY (intUserPK)
-)
-
-CREATE UNIQUE INDEX tblUser_strName
-ON tblUser (strName);
+DROP TABLE IF EXISTS tblAddress;
 
 CREATE TABLE tblAddress (
     intAddressPK int IDENTITY(1,1) NOT NULL,
@@ -28,12 +16,17 @@ CREATE TABLE tblAddress (
     PRIMARY KEY (intAddressPK)
 );
 
-CREATE TABLE tblUser2Address (
-	intUser2AddressPK int IDENTITY(1,1) NOT NULL,
-    intUserFK int FOREIGN KEY REFERENCES tblUser(intUserPK),
-    intAddressFK int FOREIGN KEY REFERENCES tblAddress(intAddressPK),
-    PRIMARY KEY (intUser2AddressPK)
+CREATE TABLE tblUser (
+	intUserPK int IDENTITY(1,1) NOT NULL,
+    intAddressFK int NULL,
+	strName nvarchar(255) NOT NULL,
+	strMail nvarchar(255) NOT NULL,
+	strPassword nvarchar(255) NOT NULL,
+    PRIMARY KEY (intUserPK)
 )
+
+CREATE UNIQUE INDEX tblUser_strName
+ON tblUser (strName);
 
 CREATE TABLE tblTeam (
     intTeamPK int IDENTITY(1,1) NOT NULL,
@@ -55,6 +48,7 @@ CREATE TABLE tblOffer (
     intOfferPK int IDENTITY(1,1) NOT NULL,
     intGameFK int FOREIGN KEY REFERENCES tblGame(intGamePK),
     intUserFK int FOREIGN KEY REFERENCES tblUser(intUserPK),
+    strTitle nvarchar(255),
     blnTransportation bit,
     intAddressFK int FOREIGN KEY REFERENCES tblAddress(intAddressPK),
     datDate smalldatetime NOT NULL,

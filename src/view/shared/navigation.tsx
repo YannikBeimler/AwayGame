@@ -65,7 +65,7 @@ const Navigation: FunctionComponent<NavigationProps> = (navigationProps) => {
                 />
                 Meine Anfragen
               </Nav.Link>
-              <Nav.Link href="#">
+              <Nav.Link href="/">
                 <img
                   className={"menu-icon"}
                   src={"/assets/images/menu_icons/profile_menu_icon.svg"}

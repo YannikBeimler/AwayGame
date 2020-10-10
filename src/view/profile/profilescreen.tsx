@@ -30,12 +30,14 @@ const ProfileScreen: FunctionComponent = () => {
       longitude: !event.target.longitude.value ? address?.longitude : Number(event.target.longitude.value)
     };
     await AddressApi.saveAddress(user?.id || -1, JSON.stringify(addr));
-    //history.push(`/games`);
+    history.push(`/games`);
   };
 
   return (
     <>
-      <Navigation title={`Profil ${user?.name}`} />
+      <Navigation
+        title={`Profil ${user?.name}`}
+        backUrl={`/games/`} />
       <Container
         className={"container-fluid games-container"}
         id={"entry-header"}

@@ -212,6 +212,7 @@ class DbService {
       });
     return response;
   }
+
   async getApplicationByUser(userId: number) {
     const conn = new sql.ConnectionPool(this.dbConfig);
 
@@ -312,10 +313,10 @@ class DbService {
                 tblAddress.decLongitude
             FROM
                 tblAddress
-                INNER JOIN tblUser2Address
-                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+                INNER JOIN tblUser
+                        ON tblUser.intAddressFK = tblAddress.intAddressPK
             WHERE
-                tblUser2Address.intUserFK = ` + userId
+                tblUser.intUserPK = ` + userId
           )
           .then(function (recordset) {
             conn.close();
@@ -361,10 +362,10 @@ class DbService {
                 tblAddress.decLongitude
             FROM
                 tblAddress
-                INNER JOIN tblUser2Address
-                        ON tblUser2Address.intAddressFK = tblAddress.intAddressPK
+                INNER JOIN tblUser
+                        ON tblUser.intAddressFK = tblAddress.intAddressPK
             WHERE
-                tblUser2Address.intUserFK = ` + userId
+                tblUser.intUserPK = ` + userId
           )
           .then(function (recordset) {
             conn.close();
@@ -487,11 +488,11 @@ class DbService {
             DECLARE @intAddressID int
             SELECT @intAddressID = MAX(tblAddress.intAddressPK) FROM tblAddress
             
-            INSERT tblUser2Address (intUserFK, intAddressFK)
-            VALUES (
-              ${userId},
-              @intAddressID
-            )`;
+            UPDATE tblUser
+            SET
+                intAddressFK = @intAddressID
+            WHERE
+                intUserPK = ${userId}`;
         console.log(queryString);
 
         await req
@@ -560,7 +561,8 @@ class DbService {
         await req
           .query(
             `SELECT
-                tblUser.intUserPK
+                tblUser.intUserPK,
+                tblUser.intAddressFK
             FROM
                 tblUser
             WHERE
@@ -568,8 +570,8 @@ class DbService {
           )
           .then(function (recordset) {
             conn.close();
-            const userId = recordset.recordset[0]["intUserPK"];
-            response = new User(userId, name);
+            const element = recordset.recordset[0];
+            response = new User(element["intUserPK"], name, element["intAddressFK"]);
           })
           .catch(function (err) {
             console.log(err);
