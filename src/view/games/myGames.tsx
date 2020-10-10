@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { User } from "../../../api/model/user";
 import Login from "../shared/login";
 import OffersApi from "../../api/OffersApi";
-import { Offer } from "../../../api/model/offer";
 
 const MyGames: FunctionComponent = () => {
   const [games, setGames] = useState<Game[]>();
